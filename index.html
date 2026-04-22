@@ -229,7 +229,7 @@
                 <div class="time-row">TUẦN: <div><i class="bi bi-caret-left-fill nav-arrow" onclick="navWeek(-1)"></i><span id="txtWeek">1</span><i class="bi bi-caret-right-fill nav-arrow" onclick="navWeek(1)"></i></div></div>
             </div>
 
-            <div class="group-label">Check nuôi cây (12 Giai đoạn)</div>
+            <div class="group-label">Check nuôi cây (12 Tiêu chí)</div>
             <!-- Làm gọn grid để không bị thanh kéo -->
             <div class="growth-grid" id="growthChecksUI" style="gap: 8px;"></div>
             
@@ -471,7 +471,7 @@ function initDiary() {
     for(let i=1; i<=12; i++) {
         grid.innerHTML += `
             <label class="growth-card">
-                <input type="checkbox" class="growth-step" onchange="handleGrowthUI()"> Giai đoạn ${i}
+                <input type="checkbox" class="growth-step" onchange="handleGrowthUI()"> Tiêu Chí ${i}
             </label>`;
     }
 }
