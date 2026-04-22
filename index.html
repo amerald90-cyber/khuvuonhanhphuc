@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lớp Học Hạnh Phúc Số - Nâng Cánh Ước Mơ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;1,400&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <style>
+        :root { --cyber-cyan: #00f2ff; --cyber-green: #39ff14; --bg-dark: #050505; }
+        body { background: var(--bg-dark); color: #e0e0e0; font-family: 'Roboto', sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
+
+        .nav-tabs { background: #000; border: none; padding: 5px 10px 0; border-bottom: 2px solid #1a1a1a; position: sticky; top: 0; z-index: 1000; }
+        .nav-link { color: #666; border: none !important; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; padding: 12px 20px; font-family: 'Orbitron', sans-serif; }
+        .nav-link.active { background: var(--cyber-cyan) !important; color: #000 !important; box-shadow: 0 -5px 20px rgba(0, 242, 255, 0.4); }
+
+        .main-wrapper { display: flex; flex-direction: row; height: calc(100vh - 55px); }
+        .sidebar { width: 330px; background: #111; padding: 20px; overflow-y: auto; border-right: 1px solid #222; flex-shrink: 0; }
+        .preview-area { flex-grow: 1; background: #000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        #previewImg { max-width: 100%; max-height: 100%; object-fit: contain; box-shadow: 0 0 50px rgba(0,0,0,0.9); border-radius: 8px; }
+
+        @media (max-width: 992px) { .main-wrapper { flex-direction: column; height: auto; } .sidebar { width: 100%; border-right: none; } .preview-area { height: 60vh; } }
+
+        .group-label { color: var(--cyber-cyan); font-weight: bold; text-transform: uppercase; font-size: 0.75rem; margin-top: 20px; margin-bottom: 12px; border-bottom: 1px solid #333; padding-bottom: 5px; letter-spacing: 1px; }
+        .form-control { background: #1a1a1a; border: 1px solid #333; color: white; font-size: 0.85rem; margin-bottom: 10px; }
+        label { font-size: 0.7rem; color: #888; display: block; margin-bottom: 3px; }
+        input[type=range] { width: 100%; accent-color: var(--cyber-cyan); margin-bottom: 12px; }
+
+        .btn-action { font-weight: bold; padding: 12px; border-radius: 4px; border: none; width: 100%; margin-top: 10px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-garden { background: linear-gradient(45deg, #0066ff, var(--cyber-cyan)); color: #fff; }
+        .btn-save { background: #222; color: #888; }
+
+        .garden-container { padding: 40px; background: radial-gradient(circle at center, #0a1a2f 0%, #000 100%); min-height: 100%; position: relative; overflow-y: auto; display: flex; flex-direction: column; }
+        .garden-stats { background: rgba(0,0,0,0.4); padding: 30px; border-radius: 20px; border: 1px solid rgba(0, 242, 255, 0.2); margin-bottom: 50px; }
+        .garden-stats h2 { font-family: 'Orbitron', sans-serif; color: var(--cyber-cyan); text-shadow: 0 0 15px var(--cyber-cyan); margin-bottom: 5px; }
+        .sub-founder { font-size: 0.8rem; color: #aaa; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px; }
+
+        .garden-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 60px 40px; justify-items: center; flex-grow: 1; }
+        
+        .tech-node { width: 120px; position: relative; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; will-change: transform; }
+        .tech-node:hover { transform: scale(1.1); }
+        .tech-node::after {
+            content: ''; position: absolute; bottom: 35px; width: 60px; height: 15px;
+            background: radial-gradient(ellipse at center, rgba(0, 242, 255, 0.5) 0%, transparent 70%);
+            border-radius: 50%; transform: scaleX(1.5); filter: blur(2px); z-index: 1;
+            animation: pulse-plate 3s infinite ease-in-out;
+        }
+        .mam-xanh-img { width: 85px; height: 85px; object-fit: contain; z-index: 2; filter: drop-shadow(0 0 10px var(--cyber-green)); animation: pulse-mam 3s infinite ease-in-out; }
+        .node-name { margin-top: 15px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: #fff; font-weight: bold; text-transform: uppercase; text-align: center; white-space: nowrap; width: 140px; overflow: hidden; text-overflow: ellipsis; }
+
+        /* MODAL OPTIMIZATION */
+        .modal.fade .modal-dialog { transition: transform 0.2s ease-out; transform: scale(0.8); }
+        .modal.show .modal-dialog { transform: scale(1); }
+        .modal-content { background: #000 !important; border: 1px solid rgba(0, 242, 255, 0.3) !important; box-shadow: 0 0 50px rgba(0, 0, 0, 1); border-radius: 15px; }
+        .modal-body { padding: 10px !important; display: flex; flex-direction: column; align-items: center; }
+        #modalImg { width: 100%; max-height: 85vh; object-fit: contain; border-radius: 8px; transition: opacity 0.2s; }
+
+        .btn-close-interface {
+            background: #111; border: 1px solid #333; color: #888; font-family: 'Orbitron'; font-size: 0.75rem; padding: 10px 30px; margin-top: 15px; border-radius: 5px; text-transform: uppercase; letter-spacing: 2px;
+        }
+
+        @keyframes pulse-mam { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.05) translateY(-5px); } }
+        @keyframes pulse-plate { 0%, 100% { transform: scaleX(1.5); opacity: 0.3; } 50% { transform: scaleX(2); opacity: 0.6; } }
+
+        #loading { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
+    </style>
+</head>
+<body>
+
+<div id="loading">
+    <div class="spinner-border text-info" style="width: 4rem; height: 4rem;"></div>
+    <div class="mt-4 text-info fw-bold" style="font-family: 'Orbitron';">ĐANG XỬ LÝ...</div>
+</div>
+
+<ul class="nav nav-tabs" id="myTab">
+    <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#edit-pane">Gửi thông điệp</button></li>
+    <li class="nav-item"><button class="nav-link" id="garden-tab-btn" data-bs-toggle="tab" data-bs-target="#garden-pane">Vườn Ươm Hạnh Phúc</button></li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="edit-pane">
+        <div class="main-wrapper">
+            <div class="sidebar">
+                <div class="group-label">1. Thông tin mầm xanh</div>
+                <input type="text" id="inpName" class="form-control" placeholder="Nhập họ và tên...">
+                <textarea id="inpMessage" class="form-control" rows="4" placeholder="Nhập thông điệp yêu thương..."></textarea>
+                <div class="group-label">2. Hiệu chuẩn</div>
+                <label>Cỡ chữ:</label><input type="range" id="msgSize" min="15" max="45" value="26">
+                <label>Độ rộng:</label><input type="range" id="msgWidth" min="300" max="800" value="700">
+                <label>Dọc thông điệp:</label><input type="range" id="msgY" min="-200" max="300" value="0">
+                <label>Dọc tên:</label><input type="range" id="nameY" min="-100" max="100" value="0">
+                <button onclick="addToGarden()" class="btn-action btn-garden">Gieo mầm hạnh phúc</button>
+                <button onclick="downloadImage()" class="btn-action btn-save">Lưu về máy</button>
+            </div>
+            <div class="preview-area"><img id="previewImg" src=""></div>
+        </div>
+    </div>
+
+    <div class="tab-pane fade" id="garden-pane">
+        <div class="garden-container text-center">
+            <div class="garden-stats">
+                <h2>VƯỜN ƯƠM MẦM HẠNH PHÚC</h2>
+                <div class="sub-founder">Hành trình Việt Nam</div>
+                <p class="text-info fs-5">Đã có <b id="treeCount" style="font-size: 3rem; color: #fff;">0</b> hạt giống</p>
+            </div>
+            <div class="garden-grid" id="gardenGrid"></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="treeModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="modalImg" src="">
+                <button class="btn-close-interface" data-bs-dismiss="modal">ĐÓNG CỬA SỔ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<canvas id="mainCanvas" style="display:none;"></canvas>
+<canvas id="thumbCanvas" style="display:none;"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhvdt_A7KfvUM5p5V_fn_-c8YRPO3Bv3RV6WFpF0j3LguMcifoKtF2J1V9TbrEByoa/exec"; 
+    const BG_URL = "https://lh3.googleusercontent.com/d/1Ed63Y4L1jsJy8tI9L7Bf5xBLMaCJbLoH";
+    const LOGO_CAY_TO = "https://lh3.googleusercontent.com/d/1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX"; 
+    const LOGO_MAM_NON = "https://lh3.googleusercontent.com/d/1zcRCXTCYL5vRzo5TLbT2tux81ISCFrFt"; 
+
+    let gardenData = []; 
+    let imageCache = {}; // Object lưu trữ ảnh đã load vào RAM
+    const canvas = document.getElementById('mainCanvas');
+    const ctx = canvas.getContext('2d');
+    const previewImg = document.getElementById('previewImg');
+    let bgImg = new Image();
+
+    window.onload = () => {
+        bgImg.crossOrigin = "anonymous";
+        bgImg.src = BG_URL;
+        bgImg.onload = () => { canvas.width = bgImg.width; canvas.height = bgImg.height; update(); };
+        initLoadData();
+    };
+
+    function update() {
+        if(!bgImg.complete) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(bgImg, 0, 0);
+        drawText();
+        previewImg.src = canvas.toDataURL('image/jpeg', 0.9);
+    }
+
+    function drawText() {
+        const name = (document.getElementById('inpName').value || "").toUpperCase();
+        const message = document.getElementById('inpMessage').value || "Nhập thông điệp của bạn tại đây...";
+        const msgSize = parseInt(document.getElementById('msgSize').value);
+        const msgWidth = parseInt(document.getElementById('msgWidth').value);
+        const nameY = 415 + parseInt(document.getElementById('nameY').value); 
+        ctx.textAlign = "center"; ctx.fillStyle = "#4a2c0f"; ctx.font = "bold 28px Roboto";
+        ctx.fillText(name, 330, nameY);
+        const msgX = 750; const msgY = 400 + parseInt(document.getElementById('msgY').value); 
+        ctx.textAlign = "left"; ctx.fillStyle = "#005b96"; ctx.font = `${msgSize}px Roboto`;
+        wrapJustifiedText(ctx, message, msgX, msgY, msgWidth, msgSize * 1.5);
+    }
+
+    function wrapJustifiedText(context, text, x, y, maxWidth, lineHeight) {
+        let words = text.split(' '), lines = [], currentLine = words[0];
+        for (let i = 1; i < words.length; i++) {
+            if (context.measureText(currentLine + " " + words[i]).width < maxWidth) currentLine += " " + words[i];
+            else { lines.push(currentLine); currentLine = words[i]; }
+        }
+        lines.push(currentLine);
+        lines.forEach((line, index) => {
+            if (index === lines.length - 1 || line.split(' ').length === 1) context.fillText(line, x, y);
+            else {
+                let wds = line.split(' '), tw = 0;
+                wds.forEach(w => tw += context.measureText(w).width);
+                let sp = (maxWidth - tw) / (wds.length - 1), tx = x;
+                wds.forEach(w => { context.fillText(w, tx, y); tx += context.measureText(w).width + sp; });
+            }
+            y += lineHeight;
+        });
+    }
+
+    // TẢI DỮ LIỆU & PRE-LOAD ẢNH VÀO RAM
+    async function initLoadData() {
+        try {
+            const res = await fetch(GOOGLE_SCRIPT_URL);
+            const data = await res.json();
+            gardenData = data.items.reverse(); 
+            document.getElementById('treeCount').innerText = data.total;
+            
+            // Kỹ thuật Chuyên gia: Pre-load toàn bộ ảnh vào Cache RAM
+            gardenData.forEach(item => {
+                if (!imageCache[item.hoten]) {
+                    const img = new Image();
+                    img.src = item.imgData;
+                    imageCache[item.hoten] = img; // Lưu vào RAM
+                }
+            });
+
+            renderGarden();
+        } catch (e) { renderGarden(); }
+    }
+
+    function renderGarden() {
+        const grid = document.getElementById('gardenGrid');
+        if(!grid) return;
+        grid.innerHTML = "";
+        
+        gardenData.forEach(item => {
+            const div = document.createElement('div');
+            div.className = "tech-node";
+            div.innerHTML = `<img src="${LOGO_CAY_TO}" class="mam-xanh-img"><div class="node-name">${item.hoten}</div>`;
+            div.onclick = () => openTreeModal(item);
+            grid.appendChild(div);
+        });
+
+        for (let i = 0; i < 20; i++) {
+            const div = document.createElement('div');
+            div.className = "tech-node";
+            div.innerHTML = `<img src="${LOGO_MAM_NON}" class="mam-xanh-img">`;
+            grid.appendChild(div);
+        }
+    }
+
+    // MỞ MODAL TỨC THÌ TỪ RAM
+    function openTreeModal(item) {
+        const modalImg = document.getElementById('modalImg');
+        // Nếu đã có trong RAM thì lấy ra dùng luôn (Cực nhanh)
+        if (imageCache[item.hoten]) {
+            modalImg.src = imageCache[item.hoten].src;
+        } else {
+            modalImg.src = item.imgData;
+        }
+        new bootstrap.Modal(document.getElementById('treeModal')).show();
+    }
+
+    async function addToGarden() {
+        const nameVal = document.getElementById('inpName').value;
+        const msgVal = document.getElementById('inpMessage').value;
+        if(!nameVal) return alert("Vui lòng nhập tên!");
+        
+        document.getElementById('loading').style.display = 'flex';
+        
+        const fullImgData = canvas.toDataURL('image/jpeg', 0.95); // Giữ chất lượng cao
+        const newItem = { hoten: nameVal, imgData: fullImgData, thongdiep: msgVal };
+
+        // Lưu vào cache ngay lập tức để mở được luôn
+        const tempImg = new Image();
+        tempImg.src = fullImgData;
+        imageCache[nameVal] = tempImg;
+
+        gardenData.unshift(newItem); 
+        document.getElementById('treeCount').innerText = parseInt(document.getElementById('treeCount').innerText) + 1;
+        renderGarden(); 
+        
+        setTimeout(() => {
+            document.getElementById('loading').style.display = 'none';
+            new bootstrap.Tab(document.getElementById('garden-tab-btn')).show();
+        }, 400);
+
+        fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ ...newItem, donvi: "Student", tinh: "VN" }) });
+        downloadImage();
+    }
+
+    function downloadImage() {
+        const link = document.createElement('a');
+        link.download = `HanhPhuc_${Date.now()}.jpg`;
+        link.href = canvas.toDataURL('image/jpeg', 0.95);
+        link.click();
+    }
+
+    document.getElementById('garden-tab-btn').addEventListener('click', () => { renderGarden(); });
+    document.querySelectorAll('input, textarea').forEach(el => el.oninput = update);
+</script>
+</body>
+</html>
