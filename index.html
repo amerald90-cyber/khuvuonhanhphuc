@@ -140,6 +140,42 @@
 }
 .growth-card:hover { border-color: var(--cyber-cyan); background: #1a1a1a; }
 .growth-card input { width: 16px; height: 16px; accent-color: var(--cyber-green); } 
+
+/* NÚT BẢO MẬT GỌN NHẸ - LUÔN CỐ ĐỊNH */
+.tech-lock-badge {
+    position: fixed;
+    top: 65px; 
+    left: 15px;
+    z-index: 10000;
+    padding: 4px 10px;
+    background: rgba(0, 0, 0, 0.6); /* Nền tối để nổi bật */
+    border: 1px solid var(--cyber-cyan);
+    color: var(--cyber-cyan);
+    border-radius: 4px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+    width: auto !important; /* Ngăn chặn bị giãn rộng */
+}
+
+/* Khi mở khóa - Chuyển sang xanh lá nhỏ gọn */
+.tech-lock-badge.unlocked {
+    border-color: var(--cyber-green);
+    color: var(--cyber-green);
+    box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+}
+
+.tech-lock-badge:hover {
+    transform: scale(1.05);
+    background: rgba(255, 255, 255, 0.1);
+}
  </style>
 </head>
 <body>
@@ -186,6 +222,9 @@
     </div>
 </div>
 <div class="tab-pane fade" id="tracking-pane">
+<div id="btnUnlock" onclick="unlockSystem()" class="tech-lock-badge">
+    <i class="bi bi-lock-fill"></i> <span id="lockText">CHỈ XEM</span>
+</div>
     <div class="tracking-main-layout">
         <!-- CỘT 1: TÌM KIẾM & TIÊU CHUẨN (BÊN TRÁI) -->
         <div class="criteria-reference">
@@ -224,7 +263,7 @@
         <!-- CỘT 3: BẢNG ĐIỀU KHIỂN THỜI GIAN & CHECK (BÊN PHẢI) -->
         <div class="action-panel">
             <div class="time-navigator">
-                <div class="time-row">NĂM: <div><i class="bi bi-caret-left-fill nav-arrow" onclick="navYear(-1)"></i><span id="txtYear">2024</span><i class="bi bi-caret-right-fill nav-arrow" onclick="navYear(1)"></i></div></div>
+                <div class="time-row">NĂM: <div><i class="bi bi-caret-left-fill nav-arrow" onclick="navYear(-1)"></i><span id="txtYear">2025</span><i class="bi bi-caret-right-fill nav-arrow" onclick="navYear(1)"></i></div></div>
                 <div class="time-row">THÁNG: <div><i class="bi bi-caret-left-fill nav-arrow" onclick="navMonth(-1)"></i><span id="txtMonth">10</span><i class="bi bi-caret-right-fill nav-arrow" onclick="navMonth(1)"></i></div></div>
                 <div class="time-row">TUẦN: <div><i class="bi bi-caret-left-fill nav-arrow" onclick="navWeek(-1)"></i><span id="txtWeek">1</span><i class="bi bi-caret-right-fill nav-arrow" onclick="navWeek(1)"></i></div></div>
             </div>
@@ -262,13 +301,14 @@ document.onkeydown = function(e) {
     if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 67 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
 }
 
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxhvdt_A7KfvUM5p5V_fn_-c8YRPO3Bv3RV6WFpF0j3LguMcifoKtF2J1V9TbrEByoa/exec"; 
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwl79dP0bB_vz0f3LJrdqKiWdyb1c0uNCoPI0Ut1WUJN-P5iNW02vvQcVxqK4a8JgmI/exec"; 
     const BG_URL = "https://lh3.googleusercontent.com/d/1Ed63Y4L1jsJy8tI9L7Bf5xBLMaCJbLoH";
     const LOGO_CAY_TO = "https://lh3.googleusercontent.com/d/1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX"; 
     const LOGO_MAM_NON = "https://lh3.googleusercontent.com/d/1zcRCXTCYL5vRzo5TLbT2tux81ISCFrFt"; 
 
     let gardenData = []; 
-    let imageCache = {}; // Object lưu trữ ảnh đã load vào RAM
+let imageCache = {}; 
+let cloudTrackingData = {}; // <--- Thêm dòng này để giữ dữ liệu từ server
     const canvas = document.getElementById('mainCanvas');
     const ctx = canvas.getContext('2d');
     const previewImg = document.getElementById('previewImg');
@@ -335,25 +375,28 @@ const anh12GiaiDoan = [
     }
 
     // TẢI DỮ LIỆU & PRE-LOAD ẢNH VÀO RAM
-    async function initLoadData() {
-        try {
-            const res = await fetch(GOOGLE_SCRIPT_URL);
-            const data = await res.json();
-            gardenData = data.items.reverse(); 
-            document.getElementById('treeCount').innerText = data.total;
-            
-            // Kỹ thuật Chuyên gia: Pre-load toàn bộ ảnh vào Cache RAM
-            gardenData.forEach(item => {
-                if (!imageCache[item.hoten]) {
-                    const img = new Image();
-                    img.src = item.imgData;
-                    imageCache[item.hoten] = img; // Lưu vào RAM
-                }
-            });
+async function initLoadData() {
+    try {
+        // Tải dữ liệu vườn ươm
+        const res = await fetch(GOOGLE_SCRIPT_URL);
+        const data = await res.json();
+        gardenData = data.items.reverse(); 
+        document.getElementById('treeCount').innerText = data.total;
+        
+        // Tải thêm dữ liệu tiến độ (TRACKING)
+        const resTrack = await fetch(GOOGLE_SCRIPT_URL + "?action=GET_TRACKING");
+        cloudTrackingData = await resTrack.json();
 
-            renderGarden();
-        } catch (e) { renderGarden(); }
-    }
+        gardenData.forEach(item => {
+            if (!imageCache[item.hoten]) {
+                const img = new Image();
+                img.src = item.imgData;
+                imageCache[item.hoten] = img;
+            }
+        });
+        renderGarden();
+    } catch (e) { console.error("Lỗi tải dữ liệu:", e); }
+}
 
     function renderGarden() {
         const grid = document.getElementById('gardenGrid');
@@ -523,28 +566,79 @@ function navYear(d) { curYear += d; document.getElementById('txtYear').innerText
 function navMonth(d) { curMonth += d; if(curMonth>12) curMonth=1; if(curMonth<1) curMonth=12; document.getElementById('txtMonth').innerText = curMonth; loadStudentData(); }
 function navWeek(d) { curWeek += d; if(curWeek>4) curWeek=1; if(curWeek<1) curWeek=4; document.getElementById('txtWeek').innerText = curWeek; loadStudentData(); }
 
-function saveStudentData() {
+async function saveStudentData() {
     const name = document.getElementById('selectStudentDiary').value;
     if(!name) return alert("Vui lòng chọn tên học sinh!");
-    const data = {
-        checks: Array.from(document.querySelectorAll('.growth-step')).map(c => c.checked),
-        comment: document.getElementById('diaryComment').value
-    };
-    const key = `diary_${name}_${curYear}_${curMonth}_${curWeek}`;
-    localStorage.setItem(key, JSON.stringify(data));
-    alert(`Đã lưu thành công cho em ${name}`);
-}
+    
+    // 1. Lấy dữ liệu hiện tại từ giao diện
+    const checks = Array.from(document.querySelectorAll('.growth-step')).map(c => c.checked);
+    const comment = document.getElementById('diaryComment').value;
+    const key = `${name}_${curYear}_${curMonth}_${curWeek}`;
 
+    // 2. CẬP NHẬT REAL-TIME VÀO BỘ NHỚ TẠM (Quan trọng nhất)
+    cloudTrackingData[key] = { checks: checks, comment: comment };
+
+    // 3. Hiển thị thông báo nhỏ (thay vì Loading che hết màn hình)
+    const btn = document.querySelector('button[onclick="saveStudentData()"]');
+    const originalText = btn.innerText;
+    btn.innerText = "⌛ ĐANG ĐỒNG BỘ...";
+    btn.style.opacity = "0.7";
+
+    const payload = {
+        action: "SAVE_TRACKING",
+        student: name,
+        year: curYear,
+        month: curMonth,
+        week: curWeek,
+        checks: checks,
+        comment: comment
+    };
+
+    try {
+        // Gửi dữ liệu ngầm lên server
+        await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify(payload)
+        });
+        
+        // Hiệu ứng thành công tức thì
+        btn.innerText = "✅ ĐÃ LƯU ĐÁM MÂY";
+        btn.classList.remove('btn-garden');
+        btn.style.background = "var(--cyber-green)";
+        btn.style.color = "#000";
+
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.opacity = "1";
+            btn.style.background = ""; // Trả về màu cũ
+            btn.classList.add('btn-garden');
+        }, 2000);
+
+    } catch (e) {
+        alert("Lỗi đồng bộ! Dữ liệu tạm thời chỉ lưu tại máy này.");
+        btn.innerText = originalText;
+    }
+}
 function loadStudentData() {
     const name = document.getElementById('selectStudentDiary').value;
-    document.getElementById('diaryNameDisplay').innerText = name || "HỌC SINH";
-    const key = `diary_${name}_${curYear}_${curMonth}_${curWeek}`;
-    const saved = localStorage.getItem(key);
-    const data = saved ? JSON.parse(saved) : {checks: [], comment: ""};
+    const nameDisplay = document.getElementById('diaryNameDisplay');
+    if(nameDisplay) nameDisplay.innerText = name || "HỌC SINH";
     
-    document.querySelectorAll('.growth-step').forEach((cb, i) => cb.checked = data.checks[i] || false);
-    document.getElementById('diaryComment').value = data.comment || "";
-    handleGrowthUI();
+    const key = `${name}_${curYear}_${curMonth}_${curWeek}`;
+    
+    // Truy xuất cực nhanh từ RAM
+    const data = cloudTrackingData[key] || { checks: [], comment: "" };
+    
+    const checkBoxes = document.querySelectorAll('.growth-step');
+    checkBoxes.forEach((cb, i) => {
+        cb.checked = (data.checks && data.checks[i]) ? true : false;
+    });
+    
+    const commentArea = document.getElementById('diaryComment');
+    if(commentArea) commentArea.value = data.comment || "";
+    
+    handleGrowthUI(); // Cập nhật hình ảnh cây ngay lập tức
 }
 
 // Khởi chạy hệ thống cùng code cũ
@@ -553,6 +647,56 @@ window.onload = () => {
     if(baseOnload) baseOnload();
     initDiary();
 };
+let isEditable = false; // Mặc định là chỉ xem
+const ADMIN_PASS = "6868"; // Đặt mật khẩu của bạn ở đây
+
+// Hàm mở khóa hệ thống
+function unlockSystem() {
+    if (isEditable) {
+        // Nếu đang mở rồi thì bấm vào để khóa lại
+        isEditable = false;
+        applyLockStatus();
+        alert("Đã khóa chế độ chỉnh sửa.");
+        return;
+    }
+
+    let pass = prompt("Nhập mật khẩu để quyền chỉnh sửa nhật ký:");
+    if (pass === ADMIN_PASS) {
+        isEditable = true;
+        applyLockStatus();
+        alert("Xác thực thành công! Bạn có thể chỉnh sửa ngay bây giờ.");
+    } else {
+        alert("Sai mật khẩu! Bạn chỉ có quyền xem nội dung.");
+    }
+}
+
+// Hàm áp dụng trạng thái Khóa/Mở lên các ô nhập liệu
+function applyLockStatus() {
+    const inputs = document.querySelectorAll('.growth-step');
+    const comment = document.getElementById('diaryComment');
+    const saveBtn = document.querySelector('button[onclick="saveStudentData()"]');
+    const btnUnlock = document.getElementById('btnUnlock');
+
+    if (isEditable) {
+        // CHẾ ĐỘ CHỈNH SỬA
+        inputs.forEach(el => el.disabled = false);
+        comment.disabled = false;
+        if (saveBtn) saveBtn.style.display = "block";
+        
+        // Chỉ thêm class unlocked, giữ nguyên class tech-lock-badge
+        btnUnlock.classList.add('unlocked');
+        btnUnlock.innerHTML = '<i class="bi bi-unlock-fill"></i> CHỈNH SỬA';
+    } else {
+        // CHẾ ĐỘ CHỈ XEM
+        inputs.forEach(el => el.disabled = true);
+        comment.disabled = true;
+        if (saveBtn) saveBtn.style.display = "none";
+        
+        // Gỡ bỏ class unlocked
+        btnUnlock.classList.remove('unlocked');
+        btnUnlock.innerHTML = '<i class="bi bi-lock-fill"></i> CHỈ XEM';
+    }
+}
 </script>
 </body>
 </html>
