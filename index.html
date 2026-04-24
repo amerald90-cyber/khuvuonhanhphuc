@@ -176,6 +176,43 @@
     transform: scale(1.05);
     background: rgba(255, 255, 255, 0.1);
 }
+.journey-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(0, 242, 255, 0.1);
+    border-radius: 15px;
+    padding: 15px;
+    text-align: center;
+    transition: 0.3s;
+    position: relative;
+}
+
+.journey-card:hover {
+    background: rgba(0, 242, 255, 0.05);
+    border-color: var(--cyber-cyan);
+    transform: translateY(-5px);
+}
+
+.journey-time-tag {
+    font-family: 'Orbitron';
+    font-size: 0.6rem;
+    color: var(--cyber-cyan);
+    margin-top: 10px;
+    display: block;
+    border-top: 1px solid #222;
+    padding-top: 5px;
+}
+
+.journey-comment-mini {
+    font-size: 0.65rem;
+    color: #888;
+    font-style: italic;
+    margin-top: 5px;
+    display: block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
  </style>
 </head>
 <body>
@@ -189,6 +226,7 @@
     <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#edit-pane">Gửi thông điệp</button></li>
     <li class="nav-item"><button class="nav-link" id="garden-tab-btn" data-bs-toggle="tab" data-bs-target="#garden-pane">Vườn Ươm Hạnh Phúc</button></li>
 <li class="nav-item"><button class="nav-link" id="tracking-tab-btn" data-bs-toggle="tab" data-bs-target="#tracking-pane">Theo dõi tiến độ</button></li>
+<li class="nav-item"><button class="nav-link" id="journey-tab-btn" data-bs-toggle="tab" data-bs-target="#journey-pane">Hành trình Trưởng thành</button></li>
 </ul>
 
 <div class="tab-content">
@@ -198,17 +236,34 @@
                 <div class="group-label">1. Thông tin mầm xanh</div>
                 <input type="text" id="inpName" class="form-control" placeholder="Nhập họ và tên...">
                 <textarea id="inpMessage" class="form-control" rows="4" placeholder="Nhập thông điệp yêu thương..."></textarea>
-                <div class="group-label">2. Hiệu chuẩn</div>
-                <label>Cỡ chữ:</label><input type="range" id="msgSize" min="15" max="45" value="26">
+                <div class="group-label">2. Hiệu chuẩn</div><label>Cỡ chữ:</label><input type="range" id="msgSize" min="20" max="100" value="60">
                 <label>Độ rộng:</label><input type="range" id="msgWidth" min="300" max="800" value="700">
                 <label>Dọc thông điệp:</label><input type="range" id="msgY" min="-200" max="300" value="0">
                 <label>Dọc tên:</label><input type="range" id="nameY" min="-100" max="100" value="0">
+
                 <button onclick="addToGarden()" class="btn-action btn-garden">Gieo mầm hạnh phúc</button>
                 <button onclick="downloadImage()" class="btn-action btn-save">Lưu về máy</button>
             </div>
             <div class="preview-area"><img id="previewImg" src=""></div>
         </div>
     </div>
+<div class="tab-pane fade" id="journey-pane">
+    <div class="garden-container">
+        <div class="garden-stats text-center">
+            <h2>NHẬT KÝ TRƯỞNG THÀNH</h2>
+            <div class="sub-founder" id="journeyStudentTitle">Vui lòng chọn học sinh để xem hành trình</div>
+            
+            <div class="d-flex justify-content-center mt-3">
+                <select id="selectStudentJourney" class="form-control w-50" onchange="renderStudentJourney()" style="border: 1px solid var(--cyber-cyan);">
+                    <option value="">-- Chọn học sinh để xem hành trình --</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Nơi hiển thị các cây qua từng tuần -->
+        <div class="garden-grid" id="journeyGrid"></div>
+    </div>
+</div>
 
     <div class="tab-pane fade" id="garden-pane">
         <div class="garden-container text-center">
@@ -221,6 +276,7 @@
         </div>
     </div>
 </div>
+
 <div class="tab-pane fade" id="tracking-pane">
 <div id="btnUnlock" onclick="unlockSystem()" class="tech-lock-badge">
     <i class="bi bi-lock-fill"></i> <span id="lockText">CHỈ XEM</span>
@@ -279,6 +335,7 @@
             </div>
         </div>
     </div>
+
 </div></div></div><div class="modal fade" id="treeModal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
@@ -302,7 +359,7 @@ document.onkeydown = function(e) {
 }
 
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwl79dP0bB_vz0f3LJrdqKiWdyb1c0uNCoPI0Ut1WUJN-P5iNW02vvQcVxqK4a8JgmI/exec"; 
-    const BG_URL = "https://lh3.googleusercontent.com/d/1Ed63Y4L1jsJy8tI9L7Bf5xBLMaCJbLoH";
+    const BG_URL = "https://lh3.googleusercontent.com/d/1cbEQ6vDi6p-Ie1YAk6sjHxuajkqJt1g0";
     const LOGO_CAY_TO = "https://lh3.googleusercontent.com/d/1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX"; 
     const LOGO_MAM_NON = "https://lh3.googleusercontent.com/d/1zcRCXTCYL5vRzo5TLbT2tux81ISCFrFt"; 
 
@@ -697,6 +754,94 @@ function applyLockStatus() {
         btnUnlock.innerHTML = '<i class="bi bi-lock-fill"></i> CHỈ XEM';
     }
 }
-</script>
+// 1. Khởi tạo danh sách học sinh (Dùng chung cho cả 2 Tab để tránh lỗi)
+function initAllStudentDropdowns() {
+    const diarySel = document.getElementById('selectStudentDiary');
+    const journeySel = document.getElementById('selectStudentJourney');
+    
+    const options = '<option value="">-- Chọn học sinh (37) --</option>' + 
+                    listStudents37.sort().map(n => `<option value="${n}">${n}</option>`).join('');
+
+    if(diarySel) diarySel.innerHTML = options;
+    if(journeySel) journeySel.innerHTML = options;
+}
+
+// 2. Hàm vẽ hành trình (Đã đổi Nhận xét -> Tên giai đoạn)
+function renderStudentJourney() {
+    const name = document.getElementById('selectStudentJourney').value;
+    const grid = document.getElementById('journeyGrid');
+    const title = document.getElementById('journeyStudentTitle');
+    
+    grid.innerHTML = ""; 
+    if (!name) {
+        title.innerText = "Vui lòng chọn học sinh để xem hành trình";
+        return;
+    }
+    
+    title.innerText = `HÀNH TRÌNH CỦA: ${name.toUpperCase()}`;
+
+    const studentRecords = [];
+    for (let key in cloudTrackingData) {
+        if (key.startsWith(name + "_")) {
+            const parts = key.split("_");
+            studentRecords.push({
+                year: parts[1], month: parts[2], week: parts[3],
+                data: cloudTrackingData[key]
+            });
+        }
+    }
+
+    studentRecords.sort((a, b) => (parseInt(a.month) - parseInt(b.month)) || (parseInt(a.week) - parseInt(b.week)));
+
+    if (studentRecords.length === 0) {
+        grid.innerHTML = `<div class="text-muted w-100 mt-5">Chưa có dữ liệu nhật ký cho học sinh này.</div>`;
+        return;
+    }
+
+    studentRecords.forEach(record => {
+        const checksCount = record.data.checks ? record.data.checks.filter(c => c === true).length : 0;
+        
+        // --- XÁC ĐỊNH TÊN GIAI ĐOẠN ---
+        let stageName = "Hạt giống";
+        let treeImg = "https://lh3.googleusercontent.com/d/1c7j4Qm6bDyFYYGoVMCP1hlFRE8sg2dRm";
+        if (checksCount > 0) {
+            treeImg = anh12GiaiDoan[checksCount - 1];
+            if (checksCount <= 4) stageName = "Đang nảy mầm";
+            else if (checksCount <= 11) stageName = "Cây trưởng thành";
+            else stageName = "Hạnh phúc rực rỡ";
+        }
+
+        const card = document.createElement('div');
+        card.className = "journey-card";
+        card.innerHTML = `
+            <img src="${treeImg}" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 0 5px var(--cyber-green));">
+            <span class="journey-time-tag">THÁNG ${record.month} - TUẦN ${record.week}</span>
+            <div style="color: var(--cyber-cyan); font-family: 'Orbitron'; font-size: 0.7rem; font-weight: bold; margin-top: 8px; text-transform: uppercase;">
+                ${stageName}
+            </div>
+            <div class="badge mt-1" style="font-size: 0.5rem; background: rgba(57, 255, 20, 0.1); color: var(--cyber-green);">
+                ${checksCount}/12 Tiêu chí
+            </div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// 3. KHỞI CHẠY HỆ THỐNG (QUAN TRỌNG: Gộp tất cả vào đây)
+window.onload = () => {
+    // Tải hình nền canvas
+    bgImg.crossOrigin = "anonymous";
+    bgImg.src = BG_URL;
+    bgImg.onload = () => { 
+        canvas.width = bgImg.width; 
+        canvas.height = bgImg.height; 
+        update(); 
+    };
+
+    // Khởi tạo các danh sách học sinh
+    initAllStudentDropdowns();
+    initDiary(); // Khởi tạo các tiêu chuẩn rọi
+    initLoadData(); // Tải dữ liệu từ Google Sheet
+};</script>
 </body>
 </html>
