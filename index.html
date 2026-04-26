@@ -213,6 +213,43 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+#treeModal .modal-dialog {
+    max-width: 100vw !important;
+    margin: 0 !important;
+    height: 100vh !important;
+}
+#treeModal .modal-content {
+    background: #000 !important;
+    border: none !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+}
+#treeModal .modal-body {
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    cursor: zoom-out;
+}
+#modalImg {
+    max-width: 100%;
+    max-height: 100vh;
+    object-fit: contain; /* Đảm bảo không mất chữ */
+}
+.btn-close-full {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    background: rgba(0, 242, 255, 0.2);
+    border: 1px solid var(--cyber-cyan);
+    color: var(--cyber-cyan);
+    padding: 8px 30px;
+    font-family: 'Orbitron';
+    text-transform: uppercase;
+}
  </style>
 </head>
 <body>
@@ -236,7 +273,7 @@
                 <div class="group-label">1. Thông tin mầm xanh</div>
                 <input type="text" id="inpName" class="form-control" placeholder="Nhập họ và tên...">
                 <textarea id="inpMessage" class="form-control" rows="4" placeholder="Nhập thông điệp yêu thương..."></textarea>
-                <div class="group-label">2. Hiệu chuẩn</div><label>Cỡ chữ:</label><input type="range" id="msgSize" min="20" max="100" value="60">
+                <div class="group-label">2. Hiệu chuẩn</div><label>Cỡ chữ:</label><input type="range" id="msgSize" min="20" max="100" value="70">
                 <label>Độ rộng:</label><input type="range" id="msgWidth" min="300" max="800" value="700">
                 <label>Dọc thông điệp:</label><input type="range" id="msgY" min="-200" max="300" value="0">
                 <label>Dọc tên:</label><input type="range" id="nameY" min="-100" max="100" value="0">
@@ -336,12 +373,12 @@
         </div>
     </div>
 
-</div></div></div><div class="modal fade" id="treeModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+</div></div></div><div class="modal fade" id="treeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
-            <div class="modal-body">
-                <img id="modalImg" src="">
-                <button class="btn-close-interface" data-bs-dismiss="modal">ĐÓNG CỬA SỔ</button>
+            <div class="modal-body" data-bs-dismiss="modal">
+                <img id="modalImg" src="" alt="Thông điệp">
+                <button class="btn-close-full">ĐÓNG CỬA SỔ</button>
             </div>
         </div>
     </div>
@@ -359,7 +396,7 @@ document.onkeydown = function(e) {
 }
 
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwl79dP0bB_vz0f3LJrdqKiWdyb1c0uNCoPI0Ut1WUJN-P5iNW02vvQcVxqK4a8JgmI/exec"; 
-    const BG_URL = "https://lh3.googleusercontent.com/d/1cbEQ6vDi6p-Ie1YAk6sjHxuajkqJt1g0";
+    const BG_URL = "https://lh3.googleusercontent.com/d/1H3t1ijicbKX-pH4JNuJHbFw2IJu2eFId";
     const LOGO_CAY_TO = "https://lh3.googleusercontent.com/d/1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX"; 
     const LOGO_MAM_NON = "https://lh3.googleusercontent.com/d/1zcRCXTCYL5vRzo5TLbT2tux81ISCFrFt"; 
 
@@ -399,18 +436,29 @@ const anh12GiaiDoan = [
         previewImg.src = canvas.toDataURL('image/jpeg', 0.9);
     }
 
-    function drawText() {
-        const name = (document.getElementById('inpName').value || "").toUpperCase();
-        const message = document.getElementById('inpMessage').value || "Nhập thông điệp của bạn tại đây...";
-        const msgSize = parseInt(document.getElementById('msgSize').value);
-        const msgWidth = parseInt(document.getElementById('msgWidth').value);
-        const nameY = 415 + parseInt(document.getElementById('nameY').value); 
-        ctx.textAlign = "center"; ctx.fillStyle = "#4a2c0f"; ctx.font = "bold 28px Roboto";
-        ctx.fillText(name, 330, nameY);
-        const msgX = 750; const msgY = 400 + parseInt(document.getElementById('msgY').value); 
-        ctx.textAlign = "left"; ctx.fillStyle = "#005b96"; ctx.font = `${msgSize}px Roboto`;
-        wrapJustifiedText(ctx, message, msgX, msgY, msgWidth, msgSize * 1.5);
-    }
+   function drawText() {
+    const name = (document.getElementById('inpName').value || "").toUpperCase();
+    const message = document.getElementById('inpMessage').value || "Nhập thông điệp của bạn tại đây...";
+    const msgSize = parseInt(document.getElementById('msgSize').value);
+    const msgWidth = parseInt(document.getElementById('msgWidth').value);
+
+    // 1. TÊN HỌC SINH: Dịch thêm sang trái khá nhiều để vào đúng tâm bảng gỗ
+    // Tọa độ X cũ 310 -> giảm xuống 245
+    const nameY = 340 + parseInt(document.getElementById('nameY').value); 
+    ctx.textAlign = "center"; 
+    ctx.fillStyle = "#4a2c0f"; 
+    ctx.font = "bold 54px Roboto"; 
+    ctx.fillText(name, 286, nameY); // X mới: 286
+
+    // 2. THÔNG ĐIỆP: Dịch sang trái thêm ~1.8cm (khoảng 70-75px)
+    // Tọa độ X cũ 720 -> giảm xuống 645
+    const msgX = 645; 
+    const msgY = 360 + parseInt(document.getElementById('msgY').value); 
+    ctx.textAlign = "left"; 
+    ctx.fillStyle = "#005b96"; 
+    ctx.font = `${msgSize}px Roboto`;
+    wrapJustifiedText(ctx, message, msgX, msgY, msgWidth, msgSize * 1.5);
+}
 
     function wrapJustifiedText(context, text, x, y, maxWidth, lineHeight) {
         let words = text.split(' '), lines = [], currentLine = words[0];
@@ -478,15 +526,24 @@ async function initLoadData() {
 
     // MỞ MODAL TỨC THÌ TỪ RAM
     function openTreeModal(item) {
-        const modalImg = document.getElementById('modalImg');
-        // Nếu đã có trong RAM thì lấy ra dùng luôn (Cực nhanh)
-        if (imageCache[item.hoten]) {
-            modalImg.src = imageCache[item.hoten].src;
-        } else {
-            modalImg.src = item.imgData;
-        }
-        new bootstrap.Modal(document.getElementById('treeModal')).show();
+    const modalImg = document.getElementById('modalImg');
+    const modalElem = document.getElementById('treeModal');
+    
+    // 1. Kiểm tra xem có dữ liệu ảnh không
+    const source = (imageCache[item.hoten]) ? imageCache[item.hoten].src : item.imgData;
+    
+    if (!source) {
+        alert("Đang tải dữ liệu ảnh, vui lòng đợi giây lát...");
+        return;
     }
+
+    // 2. Gán ảnh vào Modal
+    modalImg.src = source;
+
+    // 3. Khởi tạo và hiển thị Modal theo chuẩn Bootstrap 5
+    const myModal = new bootstrap.Modal(modalElem);
+    myModal.show();
+}
 
     async function addToGarden() {
         const nameVal = document.getElementById('inpName').value;
@@ -540,34 +597,34 @@ const standardsData = [
     {t: "Hạnh phúc rực rỡ", d: "Hoàn thiện bản thân toàn diện."}
 ];
 
-const listStudents37 = [
-    "Phạm Nguyễn Linh An", "Lê Hồng Anh", "Lê Nguyễn Hà Anh", "Nguyễn Ngọc Anh", "Phan Ninh Hà Anh", 
-    "Trịnh Hồng Anh", "Nguyễn Ngọc Ánh", "Phạm Thanh Bình", "Trần Thảo Chi", "Đàm Tiến Dũng", 
-    "Ngô Thái Dương", "Phạm Thùy Dương", "Trần Hải Đăng", "Nguyễn Gia Hân", "Hoàng Duy Hiền", 
-    "Trịnh Gia Huy", "Nguyễn Gia Khang", "Phạm Hà Khôi", "Nguyễn Hoàng Lâm", "Nguyễn Bình Minh", 
-    "Vũ Nhật Minh", "Hà Vũ Bảo My", "Đinh Bảo Ngọc", "Trần Bảo Ngọc", "Nguyễn Khôi Nguyên", 
-    "Hoàng Vũ Yến Nhi", "Trần Phạm Uyên Nhi", "Đỗ Tấn Phát", "Đinh Xuân Phúc", "Trần Hoàng Cảnh Phúc", 
-    "Tống Đại Quang", "Vũ Anh Quang", "Trần Minh Sang", "Mai Chí Thanh", "Nguyễn Phương Thảo", 
-    "Hồ Sỹ Thân", "Vũ Bách Tùng"
-];
-
+const listStudentsNew = [
+    "Đinh Quỳnh An", "Nguyễn Danh Gia An", "Đỗ Hà Anh", "Nguyễn Minh Anh", "Phạm Việt Anh", 
+    "Vũ Hoàng Diệp Anh", "Ngô Gia Bảo", "Phạm Thế Bảo", "Nguyễn Bảo Châu", "Nguyễn Thị Hồng Diệu", 
+    "Nguyễn Kim Bảo Duy", "Đinh Xuân Đạt", "Phạm Gia Hân", "Đàm Mạnh Hùng", "Trần Thu Huyền", 
+    "Phạm Gia Hưng", "Vũ Trí Kiên", "Lã Mai Khánh Linh", "Phạm Quang Minh", "Trần Nhật Minh", 
+    "Nguyễn Diễm My", "Vũ Thái Nghĩa", "Phạm Minh Ngọc", "Phạm Hà Linh Nhi", "Đoàn Thị Hồng Nhung", 
+    "Trương Thanh Phong", "Phạm Xuân Phúc", "Phạm Minh Quân", "Phạm Nhật Tài", "Trần Tiến Thành", 
+    "Trần Phương Thảo", "Vũ Hà Trang", "Tạ Nhật Tú"];
 let curYear = 2024, curMonth = 10, curWeek = 1;
 
 function initDiary() {
-    // 1. Render tiêu chuẩn trái
+    // 1. Render tiêu chuẩn trái (Giữ nguyên)
     const ref = document.getElementById('standardListUI');
+    ref.innerHTML = ""; // Xóa cũ nếu có
     standardsData.forEach(s => {
         ref.innerHTML += `<div class="ref-item"><b>${s.t}</b>${s.d}</div>`;
     });
 
-    // 2. Render danh sách chọn HS
+    // 2. Render danh sách chọn HS (Cập nhật số 32)
     const sel = document.getElementById('selectStudentDiary');
-    listStudents37.sort().forEach(n => {
+    sel.innerHTML = `<option value="">-- Chọn học sinh (32) --</option>`;
+    listStudentsNew.sort().forEach(n => {
         sel.innerHTML += `<option value="${n}">${n}</option>`;
     });
 
-    // 3. Render 12 ô check phải
+    // 3. Render 12 ô check phải (Giữ nguyên)
     const grid = document.getElementById('growthChecksUI');
+    grid.innerHTML = ""; // Xóa cũ
     for(let i=1; i<=12; i++) {
         grid.innerHTML += `
             <label class="growth-card">
@@ -759,8 +816,8 @@ function initAllStudentDropdowns() {
     const diarySel = document.getElementById('selectStudentDiary');
     const journeySel = document.getElementById('selectStudentJourney');
     
-    const options = '<option value="">-- Chọn học sinh (37) --</option>' + 
-                    listStudents37.sort().map(n => `<option value="${n}">${n}</option>`).join('');
+    const options = '<option value="">-- Chọn học sinh (32) --</option>' + 
+                    listStudentsNew.sort().map(n => `<option value="${n}">${n}</option>`).join('');
 
     if(diarySel) diarySel.innerHTML = options;
     if(journeySel) journeySel.innerHTML = options;
@@ -842,6 +899,48 @@ window.onload = () => {
     initAllStudentDropdowns();
     initDiary(); // Khởi tạo các tiêu chuẩn rọi
     initLoadData(); // Tải dữ liệu từ Google Sheet
-};</script>
+};
+let lastTotal = 0; // Biến ghi nhớ số lượng cây hiện tại
+
+async function autoSyncData() {
+    try {
+        // 1. Gọi API lấy dữ liệu mới nhất
+        const res = await fetch(GOOGLE_SCRIPT_URL);
+        const data = await res.json();
+        
+        // 2. Kiểm tra nếu có sự thay đổi (có người mới gửi)
+        if (data.total !== lastTotal) {
+            console.log("Phát hiện mầm xanh mới! Đang cập nhật...");
+            
+            // Cập nhật lại biến dữ liệu toàn cục
+            gardenData = data.items.reverse();
+            lastTotal = data.total;
+            
+            // Cập nhật con số hiển thị
+            const treeCountElem = document.getElementById('treeCount');
+            if(treeCountElem) treeCountElem.innerText = data.total;
+            
+            // Vẽ lại vườn cây mà không làm giật trang
+            renderGarden();
+            
+            // Tải dữ liệu theo dõi (Tracking) mới nhất luôn để đồng bộ nhật ký
+            const resTrack = await fetch(GOOGLE_SCRIPT_URL + "?action=GET_TRACKING");
+            cloudTrackingData = await resTrack.json();
+        }
+    } catch (e) {
+        console.error("Lỗi đồng bộ tự động:", e);
+    }
+}
+
+
+setInterval(autoSyncData, 8000); 
+
+// Cập nhật lại hàm initLoadData để gán giá trị ban đầu cho lastTotal
+const originalInitLoad = initLoadData;
+initLoadData = async function() {
+    await originalInitLoad();
+    lastTotal = gardenData.length; 
+};
+</script>
 </body>
 </html>
