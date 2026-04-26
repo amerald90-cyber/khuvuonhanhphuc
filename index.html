@@ -389,14 +389,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// 1. CHẶN CHUỘT PHẢI & PHÍM TẮT
+
 document.addEventListener('contextmenu', event => event.preventDefault());
 document.onkeydown = function(e) {
     if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 67 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
 }
 
     const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwl79dP0bB_vz0f3LJrdqKiWdyb1c0uNCoPI0Ut1WUJN-P5iNW02vvQcVxqK4a8JgmI/exec"; 
-    const BG_URL = "https://lh3.googleusercontent.com/d/1H3t1ijicbKX-pH4JNuJHbFw2IJu2eFId";
+    const BG_URL = "https://lh3.googleusercontent.com/d/1tNV4ttjpBZSCJBMUKvgnQXTMkzjpGFQB";
     const LOGO_CAY_TO = "https://lh3.googleusercontent.com/d/1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX"; 
     const LOGO_MAM_NON = "https://lh3.googleusercontent.com/d/1zcRCXTCYL5vRzo5TLbT2tux81ISCFrFt"; 
 
@@ -452,7 +452,7 @@ const anh12GiaiDoan = [
 
     // 2. THÔNG ĐIỆP: Dịch sang trái thêm ~1.8cm (khoảng 70-75px)
     // Tọa độ X cũ 720 -> giảm xuống 645
-    const msgX = 645; 
+    const msgX = 699; 
     const msgY = 360 + parseInt(document.getElementById('msgY').value); 
     ctx.textAlign = "left"; 
     ctx.fillStyle = "#005b96"; 
@@ -479,7 +479,7 @@ const anh12GiaiDoan = [
         });
     }
 
-    // TẢI DỮ LIỆU & PRE-LOAD ẢNH VÀO RAM
+    // 
 async function initLoadData() {
     try {
         // Tải dữ liệu vườn ươm
@@ -524,12 +524,12 @@ async function initLoadData() {
         }
     }
 
-    // MỞ MODAL TỨC THÌ TỪ RAM
+    // 
     function openTreeModal(item) {
     const modalImg = document.getElementById('modalImg');
     const modalElem = document.getElementById('treeModal');
     
-    // 1. Kiểm tra xem có dữ liệu ảnh không
+    
     const source = (imageCache[item.hoten]) ? imageCache[item.hoten].src : item.imgData;
     
     if (!source) {
@@ -537,7 +537,7 @@ async function initLoadData() {
         return;
     }
 
-    // 2. Gán ảnh vào Modal
+ 
     modalImg.src = source;
 
     // 3. Khởi tạo và hiển thị Modal theo chuẩn Bootstrap 5
@@ -555,7 +555,7 @@ async function initLoadData() {
         const fullImgData = canvas.toDataURL('image/jpeg', 0.95); // Giữ chất lượng cao
         const newItem = { hoten: nameVal, imgData: fullImgData, thongdiep: msgVal };
 
-        // Lưu vào cache ngay lập tức để mở được luôn
+
         const tempImg = new Image();
         tempImg.src = fullImgData;
         imageCache[nameVal] = tempImg;
@@ -725,7 +725,7 @@ async function saveStudentData() {
         setTimeout(() => {
             btn.innerText = originalText;
             btn.style.opacity = "1";
-            btn.style.background = ""; // Trả về màu cũ
+            btn.style.background = ""; 
             btn.classList.add('btn-garden');
         }, 2000);
 
