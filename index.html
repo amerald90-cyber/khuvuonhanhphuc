@@ -39,220 +39,63 @@
 
         .garden-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 60px 40px; justify-items: center; flex-grow: 1; }
         
-        .tech-node { width: 120px; position: relative; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; will-change: transform; }
-        .tech-node:hover { transform: scale(1.1); }
-        .tech-node::after {
-            content: ''; position: absolute; bottom: 35px; width: 60px; height: 15px;
-            background: radial-gradient(ellipse at center, rgba(0, 242, 255, 0.5) 0%, transparent 70%);
-            border-radius: 50%; transform: scaleX(1.5); filter: blur(2px); z-index: 1;
-            animation: pulse-plate 3s infinite ease-in-out;
+        .tech-node { width: 180px; position: relative; display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
+        .mam-xanh-img { width: 120px; height: 120px; object-fit: contain; z-index: 2; animation: pulse-mam-blue 3s infinite ease-in-out; }
+        
+        @keyframes pulse-mam-blue { 
+            0%, 100% { transform: scale(1) translateY(0); filter: drop-shadow(0 0 10px var(--cyber-cyan)); } 
+            50% { transform: scale(1.05) translateY(-5px); filter: drop-shadow(0 0 20px var(--cyber-cyan)); } 
         }
-        .mam-xanh-img { width: 85px; height: 85px; object-fit: contain; z-index: 2; filter: drop-shadow(0 0 10px var(--cyber-green)); animation: pulse-mam 3s infinite ease-in-out; }
-        .node-name { margin-top: 15px; font-family: 'Orbitron', sans-serif; font-size: 0.7rem; color: #fff; font-weight: bold; text-transform: uppercase; text-align: center; white-space: nowrap; width: 140px; overflow: hidden; text-overflow: ellipsis; }
-
-
-        .modal.fade .modal-dialog { transition: transform 0.2s ease-out; transform: scale(0.8); }
-        .modal.show .modal-dialog { transform: scale(1); }
-        .modal-content { background: #000 !important; border: 1px solid rgba(0, 242, 255, 0.3) !important; box-shadow: 0 0 50px rgba(0, 0, 0, 1); border-radius: 15px; }
-        .modal-body { padding: 10px !important; display: flex; flex-direction: column; align-items: center; }
-        #modalImg { width: 100%; max-height: 85vh; object-fit: contain; border-radius: 8px; transition: opacity 0.2s; }
-
-        .btn-close-interface {
-            background: #111; border: 1px solid #333; color: #888; font-family: 'Orbitron'; font-size: 0.75rem; padding: 10px 30px; margin-top: 15px; border-radius: 5px; text-transform: uppercase; letter-spacing: 2px;
-        }
-
-        @keyframes pulse-mam { 0%, 100% { transform: scale(1) translateY(0); } 50% { transform: scale(1.05) translateY(-5px); } }
-        @keyframes pulse-plate { 0%, 100% { transform: scaleX(1.5); opacity: 0.3; } 50% { transform: scaleX(2); opacity: 0.6; } }
 
         #loading { position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 9999; display: none; flex-direction: column; align-items: center; justify-content: center; }
 
-.tracking-main-layout { 
-    display: grid; 
-    grid-template-columns: 320px 1fr 350px; 
-    gap: 20px; 
-    padding: 20px; 
-    height: calc(100vh - 100px); 
-    background: #000;
-}
+        .tracking-main-layout { display: grid; grid-template-columns: 320px 1fr 350px; gap: 20px; padding: 20px; height: calc(100vh - 100px); background: #000; }
+        .criteria-reference { background: #0d0d0d; border: 1px solid #222; border-radius: 15px; padding: 20px; display: flex; flex-direction: column; }
+        .ref-item { font-size: 0.75rem; color: #888; padding: 8px; border-bottom: 1px solid #1a1a1a; line-height: 1.3; }
+        .ref-item b { color: var(--cyber-cyan); display: block; margin-bottom: 2px; font-family: 'Orbitron'; }
 
+        .visual-focus { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; background: radial-gradient(circle at bottom, #001a1a 0%, #000 100%); border-radius: 15px; padding: 20px; }
+        .diary-student-name { font-family: 'Orbitron', sans-serif; color: #fff; font-size: 1.8rem; margin-top: 10px; letter-spacing: 2px; text-shadow: 0 0 15px var(--cyber-cyan); }
+        .neon-bar-bg { height: 14px; background: #111; border-radius: 20px; border: 1px solid #333; overflow: hidden; position: relative; width: 85%; margin: 20px 0; }
+        .neon-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #00f2ff, #39ff14); box-shadow: 0 0 15px rgba(0, 242, 255, 0.5); transition: width 0.8s ease-in-out; }
 
-.criteria-reference { 
-    background: #0d0d0d; 
-    border: 1px solid #222; 
-    border-radius: 15px; 
-    padding: 20px; 
-    display: flex; 
-    flex-direction: column;
-}
-.ref-item { font-size: 0.75rem; color: #888; padding: 8px; border-bottom: 1px solid #1a1a1a; line-height: 1.3; }
-.ref-item b { color: var(--cyber-cyan); display: block; margin-bottom: 2px; font-family: 'Orbitron'; }
+        .tech-lock-badge { position: fixed; top: 65px; left: 15px; z-index: 10000; padding: 4px 10px; background: rgba(0, 0, 0, 0.6); border: 1px solid var(--cyber-cyan); color: var(--cyber-cyan); border-radius: 4px; font-family: 'Orbitron'; font-size: 10px; cursor: pointer; backdrop-filter: blur(10px); }
+        .tech-lock-badge.unlocked { border-color: var(--cyber-green); color: var(--cyber-green); }
 
+        .journey-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 242, 255, 0.1); border-radius: 15px; padding: 15px; text-align: center; transition: 0.3s; }
+        .journey-card:hover { border-color: var(--cyber-cyan); transform: translateY(-5px); }
+        .journey-time-tag { font-family: 'Orbitron'; font-size: 0.6rem; color: var(--cyber-cyan); margin-top: 10px; display: block; }
 
-.visual-focus { 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    justify-content: flex-start; 
-    background: radial-gradient(circle at bottom, #001a1a 0%, #000 100%); 
-    border-radius: 15px; 
-    padding: 20px;
-}
+        #treeModal .modal-content { background: #000 !important; border: none !important; }
+        .btn-close-full { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; background: rgba(0, 242, 255, 0.2); border: 1px solid var(--cyber-cyan); color: var(--cyber-cyan); padding: 8px 30px; font-family: 'Orbitron'; }
+        
+        .growth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+        .growth-card { background: #151515; border: 1px solid #222; border-radius: 6px; padding: 8px 10px; display: flex; align-items: center; gap: 8px; font-size: 0.7rem; color: #ccc; cursor: pointer; }
 
-#treeDisplayDiary { 
-    transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1); 
-    transform-origin: bottom center;
-    filter: drop-shadow(0 0 10px rgba(0, 242, 255, 0.2));
-}
-
-.diary-student-name {
-    font-family: 'Orbitron', sans-serif;
-    color: #fff;
-    font-size: 1.8rem;
-    margin-top: 10px;
-    letter-spacing: 2px;
-    text-shadow: 0 0 15px var(--cyber-cyan);
-}
-
-
-.neon-progress-wrapper { width: 85%; margin: 20px 0; }
-.neon-bar-bg { height: 14px; background: #111; border-radius: 20px; border: 1px solid #333; overflow: hidden; position: relative; }
-.neon-bar-fill { 
-    height: 100%; width: 0%; 
-    background: linear-gradient(90deg, #00f2ff, #39ff14); 
-    box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
-    transition: width 0.8s ease-in-out;
-}
-
-
-.action-panel { background: #0d0d0d; border: 1px solid #222; border-radius: 15px; padding: 15px; }
-.time-navigator { background: #151515; padding: 12px; border-radius: 10px; border: 1px solid #333; margin-bottom: 15px; }
-.time-row { display: flex; justify-content: space-between; align-items: center; color: #fff; font-family: 'Orbitron'; font-size: 0.75rem; margin-bottom: 5px; }
-.time-row span { color: var(--cyber-cyan); font-size: 0.9rem; }
-.nav-arrow { cursor: pointer; color: var(--cyber-cyan); transition: 0.2s; padding: 0 8px; }
-.nav-arrow:hover { transform: scale(1.2); }
-
-
-.growth-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.growth-card { 
-    background: #151515; border: 1px solid #222; border-radius: 6px; 
-    padding: 8px 10px; display: flex; align-items: center; gap: 8px; 
-    font-size: 0.7rem; color: #ccc; cursor: pointer; transition: 0.2s; 
-}
-.growth-card:hover { border-color: var(--cyber-cyan); background: #1a1a1a; }
-.growth-card input { width: 16px; height: 16px; accent-color: var(--cyber-green); } 
-
-
-.tech-lock-badge {
-    position: fixed;
-    top: 65px; 
-    left: 15px;
-    z-index: 10000;
-    padding: 4px 10px;
-    background: rgba(0, 0, 0, 0.6); /* Nền tối để nổi bật */
-    border: 1px solid var(--cyber-cyan);
-    color: var(--cyber-cyan);
-    border-radius: 4px;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    backdrop-filter: blur(10px);
-    transition: 0.3s;
-    width: auto !important; 
-}
-
-
-.tech-lock-badge.unlocked {
-    border-color: var(--cyber-green);
-    color: var(--cyber-green);
-    box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
-}
-
-.tech-lock-badge:hover {
-    transform: scale(1.05);
-    background: rgba(255, 255, 255, 0.1);
-}
-.journey-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(0, 242, 255, 0.1);
-    border-radius: 15px;
-    padding: 15px;
-    text-align: center;
-    transition: 0.3s;
-    position: relative;
-}
-
-.journey-card:hover {
-    background: rgba(0, 242, 255, 0.05);
-    border-color: var(--cyber-cyan);
-    transform: translateY(-5px);
-}
-
-.journey-time-tag {
-    font-family: 'Orbitron';
-    font-size: 0.6rem;
-    color: var(--cyber-cyan);
-    margin-top: 10px;
-    display: block;
-    border-top: 1px solid #222;
-    padding-top: 5px;
-}
-
-.journey-comment-mini {
-    font-size: 0.65rem;
-    color: #888;
-    font-style: italic;
-    margin-top: 5px;
-    display: block;
-    max-width: 150px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-#treeModal .modal-dialog {
-    max-width: 100vw !important;
-    margin: 0 !important;
-    height: 100vh !important;
-}
-#treeModal .modal-content {
-    background: #000 !important;
-    border: none !important;
-    height: 100vh !important;
-    border-radius: 0 !important;
-}
-#treeModal .modal-body {
-    padding: 0 !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    cursor: zoom-out;
-}
-#modalImg {
-    max-width: 100%;
-    max-height: 100vh;
-    object-fit: contain; /* Đảm bảo không mất chữ */
-}
-.btn-close-full {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 9999;
-    background: rgba(0, 242, 255, 0.2);
-    border: 1px solid var(--cyber-cyan);
-    color: var(--cyber-cyan);
-    padding: 8px 30px;
-    font-family: 'Orbitron';
-    text-transform: uppercase;
-}
- </style>
+        /* Style cho nút thông báo nhạc */
+        #music-tip { 
+            position: fixed; bottom: 15px; right: 15px; 
+            background: rgba(0, 242, 255, 0.15); color: var(--cyber-cyan); 
+            padding: 8px 15px; border-radius: 30px; border: 1px solid var(--cyber-cyan);
+            font-family: 'Orbitron'; font-size: 11px; z-index: 10001;
+            pointer-events: none; backdrop-filter: blur(5px);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        }
+    </style>
 </head>
 <body>
+
+<!-- Hệ thống âm thanh (Đã sửa link chuẩn) -->
+<audio id="music1" loop preload="auto">
+    <source src="https://docs.google.com/uc?export=download&id=1aHdVD-q44UqXYbbyYSg3me49BeABU_bm" type="audio/mpeg">
+</audio>
+<audio id="music2" loop preload="auto">
+    <source src="https://docs.google.com/uc?export=download&id=1OgitxnjH38ykOltEJYb0WgSvpSzFbzD2" type="audio/mpeg">
+</audio>
+
+<div id="music-tip">
+    <i class="bi bi-music-note-beamed"></i> NHẤN PHÍM [1] HOẶC [2] ĐỂ CHILL
+</div>
 
 <div id="loading">
     <div class="spinner-border text-info" style="width: 4rem; height: 4rem;"></div>
@@ -262,8 +105,8 @@
 <ul class="nav nav-tabs" id="myTab">
     <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#edit-pane">Gửi thông điệp</button></li>
     <li class="nav-item"><button class="nav-link" id="garden-tab-btn" data-bs-toggle="tab" data-bs-target="#garden-pane">Vườn Ươm Hạnh Phúc</button></li>
-<li class="nav-item"><button class="nav-link" id="tracking-tab-btn" data-bs-toggle="tab" data-bs-target="#tracking-pane">Theo dõi tiến độ</button></li>
-<li class="nav-item"><button class="nav-link" id="journey-tab-btn" data-bs-toggle="tab" data-bs-target="#journey-pane">Hành trình Trưởng thành</button></li>
+    <li class="nav-item"><button class="nav-link" id="tracking-tab-btn" data-bs-toggle="tab" data-bs-target="#tracking-pane">Theo dõi tiến độ</button></li>
+    <li class="nav-item"><button class="nav-link" id="journey-tab-btn" data-bs-toggle="tab" data-bs-target="#journey-pane">Hành trình Trưởng thành</button></li>
 </ul>
 
 <div class="tab-content">
@@ -274,13 +117,11 @@
                 <input type="text" id="inpName" class="form-control" placeholder="Nhập họ và tên...">
                 <textarea id="inpMessage" class="form-control" rows="4" placeholder="Nhập thông điệp yêu thương..."></textarea>
                 <div class="group-label">2. Hiệu chuẩn</div>
-<label>Cỡ chữ tên:</label>
-<input type="range" id="nameSize" min="20" max="120" value="54">
-<label>Cỡ chữ thông điệp:</label><input type="range" id="msgSize" min="20" max="100" value="60">
+                <label>Cỡ chữ tên:</label><input type="range" id="nameSize" min="20" max="120" value="54">
+                <label>Cỡ chữ thông điệp:</label><input type="range" id="msgSize" min="20" max="100" value="60">
                 <label>Độ rộng:</label><input type="range" id="msgWidth" min="300" max="1800" value="900">
                 <label>Dọc thông điệp:</label><input type="range" id="msgY" min="-200" max="300" value="0">
                 <label>Dọc tên:</label><input type="range" id="nameY" min="-100" max="100" value="0">
-
                 <button onclick="addToGarden()" class="btn-action btn-garden">Gieo mầm hạnh phúc</button>
                 <button onclick="downloadImage()" class="btn-action btn-save">Lưu về máy</button>
             </div>
@@ -288,107 +129,67 @@
         </div>
     </div>
 
-<div class="tab-pane fade" id="journey-pane">
-    <div class="garden-container">
-        <!-- Phần thống kê và chọn học sinh -->
-        <div class="garden-stats text-center">
-            <h2>NHẬT KÝ TRƯỞNG THÀNH</h2>
-            <div class="sub-founder" id="journeyStudentTitle">Vui lòng chọn học sinh để xem hành trình</div>
-            
-            <div class="d-flex justify-content-center mt-3 gap-3">
-                <!-- Chọn học sinh -->
-                <select id="selectStudentJourney" class="form-control w-25" onchange="renderStudentJourney()" style="border: 1px solid var(--cyber-cyan);">
-                    <option value="">-- Chọn học sinh --</option>
-                </select>
-                
-                <!-- Chọn Niên khóa -->
-                <select id="selectSchoolYearJourney" class="form-control w-25" onchange="renderStudentJourney()" style="border: 1px solid var(--cyber-cyan); background: #000; color: var(--cyber-cyan); font-family: 'Orbitron';">
-                    <option value="2024-2025">Niên khóa 2024 - 2025</option>
-                    <option value="2025-2026" selected>Niên khóa 2025 - 2026</option>
-                    <option value="2026-2027">Niên khóa 2026 - 2027</option>
-                </select>
-            </div>
-        </div> 
-
-        
-        <div class="garden-grid" id="journeyGrid"></div>
-    </div> 
-</div> 
-<!-- TAB VƯỜN ƯƠM HẠNH PHÚC -->
-<div class="tab-pane fade" id="garden-pane">
-    <div class="garden-container text-center">
-        <div class="garden-stats">
-            <h2>VƯỜN ƯƠM MẦM HẠNH PHÚC</h2>
-            <div class="sub-founder">Hành trình Việt Nam</div>
-            <p class="text-info fs-5">Đã có <b id="treeCount" style="font-size: 3rem; color: #fff;">0</b> hạt giống</p>
-        </div>
-        <div class="garden-grid" id="gardenGrid"></div>
-    </div>
-</div>
-<div class="tab-pane fade" id="tracking-pane">
-<div id="btnUnlock" onclick="unlockSystem()" class="tech-lock-badge">
-    <i class="bi bi-lock-fill"></i> <span id="lockText">CHỈ XEM</span>
-</div>
-    <div class="tracking-main-layout">
-        
-        <div class="criteria-reference">
-            <div class="group-label">1. Tìm chọn học sinh</div>
-            <select id="selectStudentDiary" class="form-control mb-4" onchange="loadStudentData()" style="border: 1px solid var(--cyber-cyan); box-shadow: 0 0 10px rgba(0, 242, 255, 0.2);">
-                <option value="">-- Chọn học sinh (37) --</option>
-            </select>
-
-            <div class="group-label">2. Tiêu chí lớp học hạnh phúc</div>
-            <div id="standardListUI" style="max-height: calc(100vh - 350px); overflow-y: auto; padding-right: 5px;"></div>
-        </div>
-
-      
-        <div class="visual-focus">
-            <div style="height: 350px; display: flex; align-items: flex-end; margin-bottom: 10px;">
-                <img id="treeDisplayDiary" src="https://lh3.googleusercontent.com/d/1zcRCXTCYL5vRzo5TLbT2tux81ISCFrFt" style="width: 100px;">
-            </div>
-
-            <div id="diaryNameDisplay" class="diary-student-name">HỌC SINH</div>
-            <div class="badge mt-2" id="diaryStatus" style="background: rgba(0, 242, 255, 0.1); border: 1px solid var(--cyber-cyan); color: var(--cyber-cyan);">Cấp độ: Hạt giống</div>
-
-            <div class="neon-progress-wrapper">
-                <div class="neon-bar-bg">
-                    <div id="diaryBarFill" class="neon-bar-fill"></div>
+    <div class="tab-pane fade" id="journey-pane">
+        <div class="garden-container">
+            <div class="garden-stats text-center">
+                <h2>NHẬT KÝ TRƯỞNG THÀNH</h2>
+                <div class="sub-founder" id="journeyStudentTitle">Vui lòng chọn học sinh</div>
+                <div class="d-flex justify-content-center mt-3 gap-3">
+                    <select id="selectStudentJourney" class="form-control w-25" onchange="renderStudentJourney()"></select>
+                    <select id="selectSchoolYearJourney" class="form-control w-25" onchange="renderStudentJourney()">
+                        <option value="2024-2025">Niên khóa 2024 - 2025</option>
+                        <option value="2025-2026" selected>Niên khóa 2025 - 2026</option>
+                        <option value="2026-2027">Niên khóa 2026 - 2027</option>
+                    </select>
                 </div>
-            </div>
+            </div> 
+            <div class="garden-grid" id="journeyGrid"></div>
+        </div> 
+    </div> 
 
-           
-            <div class="mt-4 w-75 text-start">
-                <label class="small text-muted mb-1" style="font-family: Orbitron; font-size: 0.65rem; letter-spacing: 1px;">NHẬN XÉT & ỨNG XỬ SỐ</label>
-                <textarea id="diaryComment" class="form-control" rows="3" placeholder="Nhập ghi chú về sự tiến bộ của con tại đây..." style="background: rgba(0,0,0,0.5);"></textarea>
-                <button onclick="saveStudentData()" class="btn-action btn-garden mt-2">LƯU NHẬT KÝ TRƯỞNG THÀNH</button>
+    <div class="tab-pane fade" id="garden-pane">
+        <div class="garden-container text-center">
+            <div class="garden-stats">
+                <h2>VƯỜN ƯƠM MẦM HẠNH PHÚC</h2>
+                <div class="sub-founder">Hành trình Việt Nam</div>
+                <p class="text-info fs-5">Đã có <b id="treeCount" style="font-size: 3rem; color: #fff;">0</b> hạt giống</p>
             </div>
-        </div>
-
-     
-        <div class="action-panel">
-            <div class="time-navigator">
-                <div class="time-row">NĂM: <div><i class="bi bi-caret-left-fill nav-arrow" onclick="navYear(-1)"></i><span id="txtYear">2025</span><i class="bi bi-caret-right-fill nav-arrow" onclick="navYear(1)"></i></div></div>
-                <div class="time-row">THÁNG: <div><i class="bi bi-caret-left-fill nav-arrow" onclick="navMonth(-1)"></i><span id="txtMonth">10</span><i class="bi bi-caret-right-fill nav-arrow" onclick="navMonth(1)"></i></div></div>
-                <div class="time-row">TUẦN: <div><i class="bi bi-caret-left-fill nav-arrow" onclick="navWeek(-1)"></i><span id="txtWeek">1</span><i class="bi bi-caret-right-fill nav-arrow" onclick="navWeek(1)"></i></div></div>
-            </div>
-
-            <div class="group-label">Check nuôi cây (12 Tiêu chí)</div>
-            <!-- Làm gọn grid để không bị thanh kéo -->
-            <div class="growth-grid" id="growthChecksUI" style="gap: 8px;"></div>
-            
-            <div class="mt-4 p-3 border border-secondary rounded" style="background: rgba(255,255,255,0.02);">
-                <small class="text-muted" style="font-size: 0.7rem; line-height: 1.2; display: block;">
-                    <i class="bi bi-info-circle me-1"></i> Tích vào các giai đoạn bên trên để nuôi dưỡng cây hạnh phúc lớn lên mỗi ngày.
-                </small>
-            </div>
+            <div class="garden-grid" id="gardenGrid"></div>
         </div>
     </div>
 
-</div></div></div><div class="modal fade" id="treeModal" tabindex="-1" aria-hidden="true">
+    <div class="tab-pane fade" id="tracking-pane">
+        <div id="btnUnlock" onclick="unlockSystem()" class="tech-lock-badge"><i class="bi bi-lock-fill"></i> CHỈ XEM</div>
+        <div class="tracking-main-layout">
+            <div class="criteria-reference">
+                <div class="group-label">1. Tìm chọn học sinh</div>
+                <select id="selectStudentDiary" class="form-control mb-4" onchange="loadStudentData()"></select>
+                <div class="group-label">2. Tiêu chí lớp học hạnh phúc</div>
+                <div id="standardListUI" style="max-height: 400px; overflow-y: auto;"></div>
+            </div>
+            <div class="visual-focus">
+                <div style="height: 350px; display: flex; align-items: flex-end; margin-bottom: 10px;">
+                    <img id="treeDisplayDiary" src="https://lh3.googleusercontent.com/d/1zcRCXTCYL5vRzo5TLbT2tux81ISCFrFt" style="width: 100px;">
+                </div>
+                <div id="diaryNameDisplay" class="diary-student-name">HỌC SINH</div>
+                <div class="badge mt-2" id="diaryStatus" style="background: rgba(0, 242, 255, 0.1); border: 1px solid var(--cyber-cyan); color: var(--cyber-cyan);">Cấp độ: Hạt giống</div>
+                <div class="neon-progress-wrapper"><div class="neon-bar-bg"><div id="diaryBarFill" class="neon-bar-fill"></div></div></div>
+                <textarea id="diaryComment" class="form-control w-75" rows="3" placeholder="Ghi chú sự tiến bộ..."></textarea>
+                <button onclick="saveStudentData()" class="btn-action btn-garden w-75 mt-2">LƯU NHẬT KÝ TRƯỞNG THÀNH</button>
+            </div>
+            <div class="action-panel">
+                <div class="group-label">Check nuôi cây (12 Tiêu chí)</div>
+                <div class="growth-grid" id="growthChecksUI"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="treeModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-fullscreen">
         <div class="modal-content">
             <div class="modal-body" data-bs-dismiss="modal">
-                <img id="modalImg" src="" alt="Thông điệp">
+                <img id="modalImg" src="" style="max-width:100%; max-height:100vh; object-fit:contain;">
                 <button class="btn-close-full">ĐÓNG CỬA SỔ</button>
             </div>
         </div>
@@ -396,228 +197,64 @@
 </div>
 
 <canvas id="mainCanvas" style="display:none;"></canvas>
-<canvas id="thumbCanvas" style="display:none;"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+// ==========================================
+// 1. QUẢN LÝ NHẠC (THEO YÊU CẦU CỦA BẠN)
+// ==========================================
+const audio1 = document.getElementById('music1');
+const audio2 = document.getElementById('music2');
 
-document.addEventListener('contextmenu', event => event.preventDefault());
+function stopAllMusic() {
+    audio1.pause();
+    audio2.pause();
+}
+
+function showMusicToast(msg) {
+    const tip = document.getElementById('music-tip');
+    tip.innerHTML = `<i class="bi bi-vinyl-fill"></i> ${msg}`;
+    setTimeout(() => { tip.innerHTML = `<i class="bi bi-music-note-beamed"></i> NHẤN PHÍM [1] HOẶC [2] ĐỂ CHILL`; }, 3000);
+}
+
+// Hàm quản lý phím bấm (Kết hợp cả chặn F12 và điều khiển nhạc)
 document.onkeydown = function(e) {
-    if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 67 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
+    // Chặn phím chức năng (Giữ nguyên tính năng cũ của bạn)
+    if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 67 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
+        return false;
+    }
+
+    // Điều khiển nhạc (Tính năng mới)
+    if (e.key === "1") {
+        stopAllMusic();
+        audio1.play().catch(() => alert("Hãy click chuột vào trang web 1 lần để trình duyệt cho phép phát nhạc!"));
+        showMusicToast("Đang phát bản nhạc 1...");
+    } 
+    else if (e.key === "2") {
+        stopAllMusic();
+        audio2.play().catch(() => alert("Hãy click chuột vào trang web 1 lần để trình duyệt cho phép phát nhạc!"));
+        showMusicToast("Đang phát bản nhạc 2...");
+    }
+    else if (e.key === "0" || e.key === "Escape") {
+        stopAllMusic();
+        showMusicToast("Đã tắt nhạc");
+    }
 }
 
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwl79dP0bB_vz0f3LJrdqKiWdyb1c0uNCoPI0Ut1WUJN-P5iNW02vvQcVxqK4a8JgmI/exec"; 
-    const BG_URL = "https://lh3.googleusercontent.com/d/1tNV4ttjpBZSCJBMUKvgnQXTMkzjpGFQB";
-    const LOGO_CAY_TO = "https://lh3.googleusercontent.com/d/1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX"; 
-    const LOGO_MAM_NON = "https://lh3.googleusercontent.com/d/1zcRCXTCYL5vRzo5TLbT2tux81ISCFrFt"; 
+// ==========================================
+// 2. CẤU HÌNH DỮ LIỆU & GOOGLE SHEET
+// ==========================================
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxREtAoJtBWo8tSOS_owySl59zy2rOuw6PKBd1sWjy3gDWLQ51AhqHz73LVNKqnTudv/exec"; 
+const BG_URL = "https://lh3.googleusercontent.com/d/1tNV4ttjpBZSCJBMUKvgnQXTMkzjpGFQB";
+const LOGO_CAY_TO = "https://lh3.googleusercontent.com/d/1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX"; 
+const LOGO_MAM_NON = "https://lh3.googleusercontent.com/d/1zcRCXTCYL5vRzo5TLbT2tux81ISCFrFt"; 
 
-    let gardenData = []; 
-let indexedTrackingData = {};
-let imageCache = {}; 
-let cloudTrackingData = {}; 
-    const canvas = document.getElementById('mainCanvas');
-    const ctx = canvas.getContext('2d');
-    const previewImg = document.getElementById('previewImg');
-    let bgImg = new Image();
-const anh12GiaiDoan = [
-    "1c7j4Qm6bDyFYYGoVMCP1hlFRE8sg2dRm", // GD1
-    "1c7j4Qm6bDyFYYGoVMCP1hlFRE8sg2dRm", // GD2
-    "1yIjAtx9CT0uAsXxBqnGoubcObTizQogp", // GD3
-    "12TMq2fJrWvMycfx5V5Sqw3eXQEWpseUc", // GD4
-    "12TMq2fJrWvMycfx5V5Sqw3eXQEWpseUc", // GD5
-    "1yuqv96tW3AFes56K0OIwLfbElcjsSYLa", // GD6
-    "1yuqv96tW3AFes56K0OIwLfbElcjsSYLa", // GD7
-    "1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX", // GD8
-    "1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX", // GD9
-    "1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX", // GD10
-    "1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX", // GD11
-    "1qqZLyaP-70oBtINbxqZ0c-PFxjmpPyWk"  // GD12
-].map(id => "https://lh3.googleusercontent.com/d/" + id);
-    window.onload = () => {
-        bgImg.crossOrigin = "anonymous";
-        bgImg.src = BG_URL;
-        bgImg.onload = () => { canvas.width = bgImg.width; canvas.height = bgImg.height; update(); };
-        initLoadData();
-    };
+let gardenData = [], cloudTrackingData = {}, indexedTrackingData = {}, imageCache = {}, renderedSet = new Set();
+let curYear = 2025, curMonth = 10, curWeek = 1, isEditable = false, lastTotal = 0;
 
-    function update() {
-        if(!bgImg.complete) return;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(bgImg, 0, 0);
-        drawText();
-        previewImg.src = canvas.toDataURL('image/jpeg', 0.9);
-    }
-
-   function drawText() {
-    const name = (document.getElementById('inpName').value || "").toUpperCase();
-    const message = document.getElementById('inpMessage').value || "Nhập thông điệp của bạn tại đây...";
-    const msgSize = parseInt(document.getElementById('msgSize').value);
-    const msgWidth = parseInt(document.getElementById('msgWidth').value);
-    
-
-    const nameSize = document.getElementById('nameSize').value;
-
-
-    const nameY = 340 + parseInt(document.getElementById('nameY').value); 
-    ctx.textAlign = "center"; 
-    ctx.fillStyle = "#4a2c0f"; 
-    
-    
-    ctx.font = `bold ${nameSize}px Roboto`; 
-    ctx.fillText(name, 286, nameY); 
-
-    const msgX = 590; 
-    const msgY = 360 + parseInt(document.getElementById('msgY').value); 
-    ctx.textAlign = "left"; 
-    ctx.fillStyle = "#005b96"; 
-    ctx.font = `${msgSize}px Roboto`;
-    wrapJustifiedText(ctx, message, msgX, msgY, msgWidth, msgSize * 1.5);
-}
-
-    function wrapJustifiedText(context, text, x, y, maxWidth, lineHeight) {
-        let words = text.split(' '), lines = [], currentLine = words[0];
-        for (let i = 1; i < words.length; i++) {
-            if (context.measureText(currentLine + " " + words[i]).width < maxWidth) currentLine += " " + words[i];
-            else { lines.push(currentLine); currentLine = words[i]; }
-        }
-        lines.push(currentLine);
-        lines.forEach((line, index) => {
-            if (index === lines.length - 1 || line.split(' ').length === 1) context.fillText(line, x, y);
-            else {
-                let wds = line.split(' '), tw = 0;
-                wds.forEach(w => tw += context.measureText(w).width);
-                let sp = (maxWidth - tw) / (wds.length - 1), tx = x;
-                wds.forEach(w => { context.fillText(w, tx, y); tx += context.measureText(w).width + sp; });
-            }
-            y += lineHeight;
-        });
-    }
-
-async function initLoadData() {
-   
-    const cachedGarden = localStorage.getItem('gardenCache');
-    const cachedTracking = localStorage.getItem('trackingCache');
-    const cachedCount = localStorage.getItem('treeCountCache');
-
-    if (cachedCount) document.getElementById('treeCount').innerText = cachedCount;
-    if (cachedGarden) {
-        gardenData = JSON.parse(cachedGarden);
-        renderGarden();
-    }
-    if (cachedTracking) {
-        cloudTrackingData = JSON.parse(cachedTracking);
-        rebuildIndex();
-        renderStudentJourney(); 
-    }
-
-    try {
-        const [resGarden, resTrack] = await Promise.all([
-            fetch(GOOGLE_SCRIPT_URL),
-            fetch(GOOGLE_SCRIPT_URL + "?action=GET_TRACKING")
-        ]);
-
-        const dataGarden = await resGarden.json();
-        cloudTrackingData = await resTrack.json();
-
-       
-        const totalSeeds = dataGarden.total;
-        document.getElementById('treeCount').innerText = totalSeeds;
-        
-
-        localStorage.setItem('treeCountCache', totalSeeds);
-        localStorage.setItem('gardenCache', JSON.stringify(dataGarden.items));
-        localStorage.setItem('trackingCache', JSON.stringify(cloudTrackingData));
-
-        gardenData = dataGarden.items.reverse();
-        rebuildIndex();
-        renderGarden();
-        renderStudentJourney(); // Cập nhật lại màn hình chào nếu chưa chọn HS
-        
-    } catch (e) { console.error("Lỗi cập nhật:", e); }
-}
-
-    function renderGarden() {
-        const grid = document.getElementById('gardenGrid');
-        if(!grid) return;
-        grid.innerHTML = "";
-        
-        gardenData.forEach(item => {
-            const div = document.createElement('div');
-            div.className = "tech-node";
-            div.innerHTML = `<img src="${LOGO_CAY_TO}" class="mam-xanh-img"><div class="node-name">${item.hoten}</div>`;
-            div.onclick = () => openTreeModal(item);
-            grid.appendChild(div);
-        });
-
-        for (let i = 0; i < 20; i++) {
-            const div = document.createElement('div');
-            div.className = "tech-node";
-            div.innerHTML = `<img src="${LOGO_MAM_NON}" class="mam-xanh-img">`;
-            grid.appendChild(div);
-        }
-    }
-
-   
-    function openTreeModal(item) {
-    const modalImg = document.getElementById('modalImg');
-    const modalElem = document.getElementById('treeModal');
-    
-    
-    const source = (imageCache[item.hoten]) ? imageCache[item.hoten].src : item.imgData;
-    
-    if (!source) {
-        alert("Đang tải dữ liệu ảnh, vui lòng đợi giây lát...");
-        return;
-    }
-
- 
-    modalImg.src = source;
-
-
-    const myModal = new bootstrap.Modal(modalElem);
-    myModal.show();
-}
-
-    async function addToGarden() {
-        const nameVal = document.getElementById('inpName').value;
-        const msgVal = document.getElementById('inpMessage').value;
-        if(!nameVal) return alert("Vui lòng nhập tên!");
-        
-        document.getElementById('loading').style.display = 'flex';
-        
-        const fullImgData = canvas.toDataURL('image/jpeg', 0.95); // Giữ chất lượng cao
-        const newItem = { hoten: nameVal, imgData: fullImgData, thongdiep: msgVal };
-
-
-        const tempImg = new Image();
-        tempImg.src = fullImgData;
-        imageCache[nameVal] = tempImg;
-
-        gardenData.unshift(newItem); 
-        document.getElementById('treeCount').innerText = parseInt(document.getElementById('treeCount').innerText) + 1;
-        renderGarden(); 
-        
-        setTimeout(() => {
-            document.getElementById('loading').style.display = 'none';
-            new bootstrap.Tab(document.getElementById('garden-tab-btn')).show();
-        }, 400);
-
-        fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ ...newItem, donvi: "Student", tinh: "VN" }) });
-        downloadImage();
-    }
-
-    function downloadImage() {
-        const link = document.createElement('a');
-        link.download = `HanhPhuc_${Date.now()}.jpg`;
-        link.href = canvas.toDataURL('image/jpeg', 0.95);
-        link.click();
-    }
-
-    document.getElementById('garden-tab-btn').addEventListener('click', () => { renderGarden(); });
-    document.querySelectorAll('input, textarea').forEach(el => el.oninput = update);
 const standardsData = [
     {t: "Biết ơn", d: "Hiểu và tôn trọng những điều tốt đẹp mình đã nhận được."},
-{t: "Hiếu thảo, lễ phép", d: "Hiếu thảo, lễ phép với người lớn."},
+    {t: "Hiếu thảo, lễ phép", d: "Hiếu thảo, lễ phép với người lớn."},
     {t: "Tự giác", d: "Chủ động trong mọi hoạt động học tập."},
     {t: "Ứng xử chuẩn", d: "Lời nói văn minh, không thô lỗ."},
     {t: "Môi trường số", d: "Sử dụng internet an toàn, tử tế."},
@@ -630,397 +267,281 @@ const standardsData = [
     {t: "Năng lượng tích cực", d: "Lan tỏa niềm vui đến mọi người."}
 ];
 
-const listStudentsNew = [
-    "Đinh Quỳnh An", "Nguyễn Danh Gia An", "Đỗ Hà Anh", "Nguyễn Minh Anh", "Phạm Việt Anh", 
-    "Vũ Hoàng Diệp Anh", "Ngô Gia Bảo", "Phạm Thế Bảo", "Nguyễn Bảo Châu", "Nguyễn Thị Hồng Diệu", 
-    "Nguyễn Kim Bảo Duy", "Đinh Xuân Đạt", "Phạm Gia Hân", "Đàm Mạnh Hùng", "Trần Thu Huyền", 
-    "Phạm Gia Hưng", "Vũ Trí Kiên", "Lã Mai Khánh Linh", "Phạm Quang Minh", "Trần Nhật Minh", 
-    "Nguyễn Diễm My", "Vũ Thái Nghĩa", "Phạm Minh Ngọc", "Phạm Hà Linh Nhi", "Đoàn Thị Hồng Nhung", 
-    "Trương Thanh Phong", "Phạm Xuân Phúc", "Phạm Minh Quân", "Phạm Nhật Tài", "Trần Tiến Thành", 
-    "Trần Phương Thảo", "Vũ Hà Trang", "Tạ Nhật Tú" , "Lương Nguyễn Tường Vy"];
-let curYear = 2025, curMonth = 9, curWeek = 1;
+const listStudents = ["Đinh Quỳnh An", "Nguyễn Danh Gia An", "Đỗ Hà Anh", "Nguyễn Minh Anh", "Phạm Việt Anh", "Vũ Hoàng Diệp Anh", "Ngô Gia Bảo", "Phạm Thế Bảo", "Nguyễn Bảo Châu", "Nguyễn Thị Hồng Diệu", "Nguyễn Kim Bảo Duy", "Đinh Xuân Đạt", "Phạm Gia Hân", "Đàm Mạnh Hùng", "Trần Thu Huyền", "Phạm Gia Hưng", "Vũ Trí Kiên", "Lã Mai Khánh Linh", "Phạm Quang Minh", "Trần Nhật Minh", "Nguyễn Diễm My", "Vũ Thái Nghĩa", "Phạm Minh Ngọc", "Phạm Hà Linh Nhi", "Đoàn Thị Hồng Nhung", "Trương Thanh Phong", "Phạm Xuân Phúc", "Phạm Minh Quân", "Phạm Nhật Tài", "Trần Tiến Thành", "Trần Phương Thảo", "Vũ Hà Trang", "Tạ Nhật Tú" , "Lương Nguyễn Tường Vy"];
+const anh12GiaiDoan = ["1c7j4Qm6bDyFYYGoVMCP1hlFRE8sg2dRm", "1c7j4Qm6bDyFYYGoVMCP1hlFRE8sg2dRm", "1yIjAtx9CT0uAsXxBqnGoubcObTizQogp", "12TMq2fJrWvMycfx5V5Sqw3eXQEWpseUc", "12TMq2fJrWvMycfx5V5Sqw3eXQEWpseUc", "1yuqv96tW3AFes56K0OIwLfbElcjsSYLa", "1yuqv96tW3AFes56K0OIwLfbElcjsSYLa", "1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX", "1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX", "1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX", "1ldUHvwfetBt1tg91OQO7xRErkOJYJoGX", "1qqZLyaP-70oBtINbxqZ0c-PFxjmpPyWk"].map(id => "https://lh3.googleusercontent.com/d/" + id);
 
-function initDiary() {
+// ==========================================
+// 3. KHỞI TẠO HỆ THỐNG
+// ==========================================
+const canvas = document.getElementById('mainCanvas');
+const ctx = canvas.getContext('2d');
+const previewImg = document.getElementById('previewImg');
+let bgImg = new Image();
+
+window.onload = () => {
+    // Khởi tạo ảnh nền Canvas
+    bgImg.crossOrigin = "anonymous";
+    bgImg.src = BG_URL;
+    bgImg.onload = () => { canvas.width = bgImg.width; canvas.height = bgImg.height; updateCanvas(); };
+
+    // Khởi tạo các Dropdown, Tiêu chí
+    initDropdowns();
+    initTrackingUI();
     
-    const ref = document.getElementById('standardListUI');
-    ref.innerHTML = ""; 
-    standardsData.forEach(s => {
-        ref.innerHTML += `<div class="ref-item"><b>${s.t}</b>${s.d}</div>`;
-    });
+    // Tải dữ liệu từ Google Sheet
+    initLoadData();
 
-   
-    const sel = document.getElementById('selectStudentDiary');
-    sel.innerHTML = `<option value="">-- Chọn học sinh (34) --</option>`;
-    listStudentsNew.sort().forEach(n => {
-        sel.innerHTML += `<option value="${n}">${n}</option>`;
-    });
+    // Lắng nghe thay đổi Input để cập nhật Canvas
+    document.querySelectorAll('input, textarea').forEach(el => el.oninput = updateCanvas);
+};
 
-   
-    const grid = document.getElementById('growthChecksUI');
-    grid.innerHTML = ""; 
-    for(let i=1; i<=12; i++) {
-        grid.innerHTML += `
-            <label class="growth-card">
-                <input type="checkbox" class="growth-step" onchange="handleGrowthUI()"> Tiêu Chí ${i}
-            </label>`;
+// ==========================================
+// 4. LOGIC XỬ LÝ CANVAS (THÔNG ĐIỆP)
+// ==========================================
+function updateCanvas() {
+    if(!bgImg.complete) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(bgImg, 0, 0);
+    
+    const name = (document.getElementById('inpName').value || "").toUpperCase();
+    const msg = document.getElementById('inpMessage').value || "Nhập thông điệp của bạn...";
+    const nameSize = document.getElementById('nameSize').value;
+    const msgSize = parseInt(document.getElementById('msgSize').value);
+    const msgWidth = parseInt(document.getElementById('msgWidth').value);
+    const nameY = 340 + parseInt(document.getElementById('nameY').value);
+    const msgY = 360 + parseInt(document.getElementById('msgY').value);
+
+    ctx.textAlign = "center"; ctx.fillStyle = "#4a2c0f"; ctx.font = `bold ${nameSize}px Roboto`;
+    ctx.fillText(name, 286, nameY);
+
+    ctx.textAlign = "left"; ctx.fillStyle = "#005b96"; ctx.font = `${msgSize}px Roboto`;
+    wrapJustifiedText(ctx, msg, 590, msgY, msgWidth, msgSize * 1.5);
+    
+    previewImg.src = canvas.toDataURL('image/jpeg', 0.9);
+}
+
+function wrapJustifiedText(context, text, x, y, maxWidth, lineHeight) {
+    let words = text.split(' '), lines = [], currentLine = words[0];
+    for (let i = 1; i < words.length; i++) {
+        if (context.measureText(currentLine + " " + words[i]).width < maxWidth) currentLine += " " + words[i];
+        else { lines.push(currentLine); currentLine = words[i]; }
     }
+    lines.push(currentLine);
+    lines.forEach((line, index) => {
+        if (index === lines.length - 1 || line.split(' ').length === 1) context.fillText(line, x, y);
+        else {
+            let wds = line.split(' '), tw = 0;
+            wds.forEach(w => tw += context.measureText(w).width);
+            let sp = (maxWidth - tw) / (wds.length - 1), tx = x;
+            wds.forEach(w => { context.fillText(w, tx, y); tx += context.measureText(w).width + sp; });
+        }
+        y += lineHeight;
+    });
+}
+
+// ==========================================
+// 5. QUẢN LÝ VƯỜN ƯƠM & DỮ LIỆU ĐÁM MÂY
+// ==========================================
+async function initLoadData() {
+    // Đọc từ Cache
+    const cCount = localStorage.getItem('treeCountCache');
+    const cGarden = localStorage.getItem('gardenCache');
+    const cTrack = localStorage.getItem('trackingCache');
+    if (cCount) document.getElementById('treeCount').innerText = cCount;
+    if (cGarden) { gardenData = JSON.parse(cGarden); renderGarden(); }
+    if (cTrack) { cloudTrackingData = JSON.parse(cTrack); rebuildIndex(); }
+
+    try {
+        const [resG, resT] = await Promise.all([
+            fetch(GOOGLE_SCRIPT_URL),
+            fetch(GOOGLE_SCRIPT_URL + "?action=GET_TRACKING")
+        ]);
+        const dG = await resG.json();
+        const dT = await resT.json();
+
+        lastTotal = dG.total;
+        document.getElementById('treeCount').innerText = dG.total;
+        gardenData = dG.items.slice().reverse();
+        cloudTrackingData = dT;
+
+        localStorage.setItem('treeCountCache', dG.total);
+        localStorage.setItem('gardenCache', JSON.stringify(gardenData));
+        localStorage.setItem('trackingCache', JSON.stringify(cloudTrackingData));
+
+        renderGarden();
+        rebuildIndex();
+        loadStudentData(); 
+    } catch (e) { console.error("Lỗi đồng bộ:", e); }
+}
+
+async function autoSyncData() {
+    try {
+        const res = await fetch(GOOGLE_SCRIPT_URL);
+        const data = await res.json();
+        if (parseInt(data.total) !== lastTotal) {
+            lastTotal = parseInt(data.total);
+            document.getElementById('treeCount').innerText = data.total;
+            gardenData = data.items.slice().reverse();
+            renderGarden();
+        }
+    } catch (e) {}
+}
+setInterval(autoSyncData, 3000);
+
+function renderGarden() {
+    const grid = document.getElementById('gardenGrid');
+    grid.innerHTML = "";
+    gardenData.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "tech-node" + (renderedSet.has(item.hoten) ? "" : " new-tree-growing");
+        renderedSet.add(item.hoten);
+        div.innerHTML = `<img src="${LOGO_CAY_TO}" class="mam-xanh-img"><div class="node-name">${item.hoten}</div>`;
+        div.onclick = () => {
+            document.getElementById('modalImg').src = item.imgData;
+            new bootstrap.Modal(document.getElementById('treeModal')).show();
+        };
+        grid.appendChild(div);
+    });
+}
+
+async function addToGarden() {
+    const name = document.getElementById('inpName').value;
+    if(!name) return alert("Vui lòng nhập tên!");
+    document.getElementById('loading').style.display = 'flex';
+    const imgData = canvas.toDataURL('image/jpeg', 0.9);
+    gardenData.unshift({ hoten: name, imgData: imgData });
+    renderGarden();
+    
+    await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ hoten: name, imgData: imgData, donvi: "Student", tinh: "VN" }) });
+    document.getElementById('loading').style.display = 'none';
+    new bootstrap.Tab(document.getElementById('garden-tab-btn')).show();
+    downloadImage();
+}
+
+function downloadImage() {
+    const link = document.createElement('a');
+    link.download = `HanhPhuc_${Date.now()}.jpg`;
+    link.href = canvas.toDataURL('image/jpeg', 0.95);
+    link.click();
+}
+
+// ==========================================
+// 6. QUẢN LÝ TIẾN ĐỘ & NHẬT KÝ
+// ==========================================
+function initDropdowns() {
+    const dSel = document.getElementById('selectStudentDiary');
+    const jSel = document.getElementById('selectStudentJourney');
+    const opts = '<option value="">-- Chọn học sinh (34) --</option>' + 
+                 listStudents.sort().map(n => `<option value="${n}">${n}</option>`).join('');
+    dSel.innerHTML = opts; jSel.innerHTML = opts;
+}
+
+function initTrackingUI() {
+    document.getElementById('standardListUI').innerHTML = standardsData.map(s => `<div class="ref-item"><b>${s.t}</b>${s.d}</div>`).join('');
+    document.getElementById('growthChecksUI').innerHTML = Array.from({length: 12}, (_, i) => `
+        <label class="growth-card">
+            <input type="checkbox" class="growth-step" onchange="handleGrowthUI()"> Tiêu chí ${i+1}
+        </label>`).join('');
+    applyLockStatus();
 }
 
 function handleGrowthUI() {
     const checks = document.querySelectorAll('.growth-step:checked').length;
-    const bar = document.getElementById('diaryBarFill');
+    document.getElementById('diaryBarFill').style.width = (checks / 12 * 100) + "%";
     const img = document.getElementById('treeDisplayDiary');
     const status = document.getElementById('diaryStatus');
     
-    
-    let p = (checks / 12) * 100;
-    bar.style.width = p + "%";
-
-  
     if (checks === 0) {
-        
-        img.src = "https://lh3.googleusercontent.com/d/1c7j4Qm6bDyFYYGoVMCP1hlFRE8sg2dRm"; 
+        img.src = "https://lh3.googleusercontent.com/d/1c7j4Qm6bDyFYYGoVMCP1hlFRE8sg2dRm";
         status.innerText = "Cấp độ: Hạt giống";
-        img.style.filter = "none";
         img.style.width = "100px";
     } else {
-        
         img.src = anh12GiaiDoan[checks - 1];
-        
-               if (checks <= 4) {
-            status.innerText = "Cấp độ: Đang nảy mầm";
-        } else if (checks <= 11) {
-            status.innerText = "Cấp độ: Cây trưởng thành";
-        } else {
-            status.innerText = "Cấp độ: Hạnh phúc rực rỡ";
-        }
-
-       
-        let newWidth = 100 + (checks * 12); 
-        img.style.width = newWidth + "px";
-
-        if (checks === 12) {
-            img.style.filter = `drop-shadow(0 0 30px var(--cyber-cyan)) brightness(1.1)`;
-        } else {
-            let glowValue = checks * 2;
-            img.style.filter = `drop-shadow(0 0 ${glowValue}px var(--cyber-green))`;
-        }
+        img.style.width = (100 + checks * 12) + "px";
+        status.innerText = (checks <= 4) ? "Cấp độ: Đang nảy mầm" : (checks <= 11 ? "Cấp độ: Trưởng thành" : "Cấp độ: Rực rỡ");
     }
 }
+
+function loadStudentData() {
+    const name = document.getElementById('selectStudentDiary').value;
+    document.getElementById('diaryNameDisplay').innerText = name || "HỌC SINH";
+    const key = `${name}_${curYear}_${curMonth}_${curWeek}`;
+    const data = cloudTrackingData[key] || { checks: [], comment: "" };
+    document.querySelectorAll('.growth-step').forEach((cb, i) => cb.checked = !!(data.checks && data.checks[i]));
+    document.getElementById('diaryComment').value = data.comment || "";
+    handleGrowthUI();
+}
+
+async function saveStudentData() {
+    if (!isEditable) return alert("Hệ thống đang ở chế độ CHỈ XEM!");
+    const name = document.getElementById('selectStudentDiary').value;
+    if(!name) return alert("Chọn học sinh!");
+    
+    const checks = Array.from(document.querySelectorAll('.growth-step')).map(c => c.checked);
+    const comment = document.getElementById('diaryComment').value;
+    cloudTrackingData[`${name}_${curYear}_${curMonth}_${curWeek}`] = { checks, comment };
+
+    const btn = document.querySelector('button[onclick="saveStudentData()"]');
+    btn.innerText = "⌛ ĐANG ĐỒNG BỘ...";
+    
+    await fetch(GOOGLE_SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: "SAVE_TRACKING", student: name, year: curYear, month: curMonth, week: curWeek, checks, comment }) });
+    
+    localStorage.setItem('trackingCache', JSON.stringify(cloudTrackingData));
+    rebuildIndex();
+    btn.innerText = "✅ ĐÃ LƯU ĐÁM MÂY";
+    setTimeout(() => btn.innerText = "LƯU NHẬT KÝ TRƯỞNG THÀNH", 2000);
+}
+
+function unlockSystem() {
+    if(prompt("Mật khẩu quản trị:") === "6868") { isEditable = true; applyLockStatus(); alert("Đã mở khóa!"); }
+    else alert("Sai mật khẩu!");
+}
+
+function applyLockStatus() {
+    const inputs = document.querySelectorAll('.growth-step, #diaryComment');
+    inputs.forEach(el => el.disabled = !isEditable);
+    const btn = document.getElementById('btnUnlock');
+    btn.innerHTML = isEditable ? '<i class="bi bi-unlock-fill"></i> ĐANG CHỈNH SỬA' : '<i class="bi bi-lock-fill"></i> CHỈ XEM';
+    btn.classList.toggle('unlocked', isEditable);
+}
+
+// ==========================================
+// 7. HÀNH TRÌNH TRƯỞNG THÀNH (TAB 4)
+// ==========================================
+function rebuildIndex() {
+    indexedTrackingData = {};
+    for (let k in cloudTrackingData) {
+        const parts = k.split("_");
+        if (!indexedTrackingData[parts[0]]) indexedTrackingData[parts[0]] = [];
+        indexedTrackingData[parts[0]].push({ year: parts[1], month: parts[2], week: parts[3], data: cloudTrackingData[k] });
+    }
+}
+
+function renderStudentJourney() {
+    const name = document.getElementById('selectStudentJourney').value;
+    const grid = document.getElementById('journeyGrid');
+    const title = document.getElementById('journeyStudentTitle');
+    if (!name) { title.innerText = "Vui lòng chọn học sinh"; grid.innerHTML = ""; return; }
+    
+    title.innerText = `HÀNH TRÌNH CỦA: ${name.toUpperCase()}`;
+    const records = indexedTrackingData[name] || [];
+    grid.innerHTML = records.map(r => {
+        const count = r.data.checks ? r.data.checks.filter(c => c).length : 0;
+        const img = count === 0 ? "https://lh3.googleusercontent.com/d/1c7j4Qm6bDyFYYGoVMCP1hlFRE8sg2dRm" : anh12GiaiDoan[count-1];
+        return `
+            <div class="journey-card">
+                <img src="${img}" style="width: 70px; height: 70px; object-fit: contain;">
+                <span class="journey-time-tag">${r.year} | T${r.month} - W${r.week}</span>
+                <div class="badge mt-2" style="background: rgba(57, 255, 20, 0.1); color: var(--cyber-green);">${count}/12 Tiêu chí</div>
+            </div>`;
+    }).join('');
+}
+
+// Navigator cho Thời gian
 function navYear(d) { curYear += d; document.getElementById('txtYear').innerText = curYear; loadStudentData(); }
 function navMonth(d) { curMonth += d; if(curMonth>12) curMonth=1; if(curMonth<1) curMonth=12; document.getElementById('txtMonth').innerText = curMonth; loadStudentData(); }
 function navWeek(d) { curWeek += d; if(curWeek>4) curWeek=1; if(curWeek<1) curWeek=4; document.getElementById('txtWeek').innerText = curWeek; loadStudentData(); }
 
-async function saveStudentData() {
-    
-    if (!isEditable) {
-        alert("⛔ CẢNH BÁO: Bạn đang ở chế độ 'CHỈ XEM'.\n\nVui lòng nhấn vào nút 'CHỈ XEM' có biểu tượng ổ khóa màu xanh phía trên để nhập mật khẩu trước khi lưu dữ liệu!");
-        return; 
-    }
-
-    const name = document.getElementById('selectStudentDiary').value;
-    if(!name) return alert("Vui lòng chọn tên học sinh!");
-    
-    const checks = Array.from(document.querySelectorAll('.growth-step')).map(c => c.checked);
-    const comment = document.getElementById('diaryComment').value;
-    const key = `${name}_${curYear}_${curMonth}_${curWeek}`;
-    cloudTrackingData[key] = { checks: checks, comment: comment };
-
-    const btn = document.querySelector('button[onclick="saveStudentData()"]');
-    const originalText = btn.innerText;
-    btn.innerText = "⌛ ĐANG ĐỒNG BỘ...";
-    btn.style.opacity = "0.7";
-
-    const payload = {
-        action: "SAVE_TRACKING",
-        student: name,
-        year: curYear,
-        month: curMonth,
-        week: curWeek,
-        checks: checks,
-        comment: comment
-    };
-
-    try {
-        await fetch(GOOGLE_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            body: JSON.stringify(payload)
-        });
-        
-       
-        localStorage.setItem('trackingCache', JSON.stringify(cloudTrackingData));
-        rebuildIndex(); 
-
-        btn.innerText = "✅ ĐÃ LƯU ĐÁM MÂY";
-        btn.style.background = "var(--cyber-green)";
-        btn.style.color = "#000";
-
-        setTimeout(() => {
-            btn.innerText = originalText;
-            btn.style.opacity = "1";
-            btn.style.background = ""; 
-            applyLockStatus(); 
-        }, 2000);
-
-    } catch (e) {
-        alert("Lỗi đồng bộ! Dữ liệu tạm thời chỉ lưu tại máy này.");
-        btn.innerText = originalText;
-    }
-}
-function loadStudentData() {
-    const name = document.getElementById('selectStudentDiary').value;
-    const nameDisplay = document.getElementById('diaryNameDisplay');
-    if(nameDisplay) nameDisplay.innerText = name || "HỌC SINH";
-    
-    
-    const key = `${name}_${curYear}_${curMonth}_${curWeek}`;
-    
-    
-    const data = cloudTrackingData[key] || { checks: [], comment: "" };
-    
-   
-    const checkBoxes = document.querySelectorAll('.growth-step');
-    checkBoxes.forEach((cb, i) => {
-        cb.checked = (data.checks && data.checks[i]) ? true : false;
-    });
-    
-    
-    const commentArea = document.getElementById('diaryComment');
-    if(commentArea) commentArea.value = data.comment || "";
-    
-    handleGrowthUI(); 
-}
-
-
-const baseOnload = window.onload;
-window.onload = () => {
-    if(baseOnload) baseOnload();
-    initDiary();
-};
-let isEditable = false; 
-const ADMIN_PASS = "6868"; 
-
-
-function unlockSystem() {
-    if (isEditable) {
-        
-        isEditable = false;
-        applyLockStatus();
-        alert("Đã khóa chế độ chỉnh sửa.");
-        return;
-    }
-
-    let pass = prompt("Nhập mật khẩu để quyền chỉnh sửa nhật ký:");
-    if (pass === ADMIN_PASS) {
-        isEditable = true;
-        applyLockStatus();
-        alert("Xác thực thành công! Bạn có thể chỉnh sửa ngay bây giờ.");
-    } else {
-        alert("Sai mật khẩu! Bạn chỉ có quyền xem nội dung.");
-    }
-}
-
-
-function applyLockStatus() {
-    const inputs = document.querySelectorAll('.growth-step');
-    const comment = document.getElementById('diaryComment');
-    const saveBtn = document.querySelector('button[onclick="saveStudentData()"]');
-    const btnUnlock = document.getElementById('btnUnlock');
-
-    if (isEditable) {
-        
-        inputs.forEach(el => el.disabled = false);
-        comment.disabled = false;
-        if (saveBtn) {
-            saveBtn.style.opacity = "1";
-            saveBtn.style.filter = "none";
-            saveBtn.style.cursor = "pointer";
-        }
-        
-        btnUnlock.classList.add('unlocked');
-        btnUnlock.innerHTML = '<i class="bi bi-unlock-fill"></i> ĐANG CHỈNH SỬA';
-    } else {
-        
-        inputs.forEach(el => el.disabled = true);
-        comment.disabled = true;
-        if (saveBtn) {
-            saveBtn.style.opacity = "0.5"; // Làm mờ nút
-            saveBtn.style.filter = "grayscale(1)"; // Biến nút thành màu xám
-            saveBtn.style.cursor = "not-allowed";
-        }
-        
-        btnUnlock.classList.remove('unlocked');
-        btnUnlock.innerHTML = '<i class="bi bi-lock-fill"></i> CHỈ XEM';
-    }
-}
-
-function initAllStudentDropdowns() {
-    const diarySel = document.getElementById('selectStudentDiary');
-    const journeySel = document.getElementById('selectStudentJourney');
-    
-    const options = '<option value="">-- Chọn học sinh (34) --</option>' + 
-                    listStudentsNew.sort().map(n => `<option value="${n}">${n}</option>`).join('');
-
-    if(diarySel) diarySel.innerHTML = options;
-    if(journeySel) journeySel.innerHTML = options;
-}
-
-function renderStudentJourney() {
-    const nameElem = document.getElementById('selectStudentJourney');
-    const schoolYearElem = document.getElementById('selectSchoolYearJourney');
-    const grid = document.getElementById('journeyGrid');
-    const title = document.getElementById('journeyStudentTitle');
-    
-    if (!grid) return;
-    grid.innerHTML = ""; 
-    
-    const name = nameElem ? nameElem.value : "";
-    const schoolYear = schoolYearElem ? schoolYearElem.value : "2025-2026";
-
-   
-    if (!name) {
-        title.innerHTML = `<i class="bi bi-info-circle me-2"></i>KHÁM PHÁ 12 CẤP ĐỘ TRƯỞNG THÀNH CỦA CÂY HẠNH PHÚC`;
-        
-        let introHtml = "";
-        anh12GiaiDoan.forEach((img, index) => {
-            let levelName = "";
-            if (index < 4) levelName = "Nảy mầm";
-            else if (index < 11) levelName = "Trưởng thành";
-            else levelName = "Rực rỡ";
-
-            introHtml += `
-                <div class="journey-card" style="opacity: 0.7; border: 1px dashed rgba(0, 242, 255, 0.3);">
-                    <img src="${img}" style="width: 60px; height: 60px; object-fit: contain; filter: grayscale(0.5);">
-                    <span class="journey-time-tag">CẤP ĐỘ ${index + 1}</span>
-                    <div style="font-size: 0.6rem; color: #666; margin-top: 5px;">${levelName}</div>
-                </div>`;
-        });
-        grid.innerHTML = introHtml;
-        return;
-    }
-
-    
-    title.innerText = `HÀNH TRÌNH CỦA: ${name.toUpperCase()} (${schoolYear})`;
-    const [yearStart, yearEnd] = schoolYear.split("-").map(y => parseInt(y));
-    const allRecords = indexedTrackingData[name] || [];
-
-    const filteredRecords = allRecords.filter(record => {
-        const m = parseInt(record.month);
-        const y = parseInt(record.year);
-        return (y === yearStart && m >= 9 && m <= 12) || (y === yearEnd && m >= 1 && m <= 5);
-    });
-
-    filteredRecords.sort((a, b) => {
-        const score1 = (parseInt(a.year) * 100) + (parseInt(a.month) < 9 ? parseInt(a.month) + 12 : parseInt(a.month));
-        const score2 = (parseInt(b.year) * 100) + (parseInt(b.month) < 9 ? parseInt(b.month) + 12 : parseInt(b.month));
-        return score1 - score2 || parseInt(a.week) - parseInt(b.week);
-    });
-
-    if (filteredRecords.length === 0) {
-        grid.innerHTML = `<div class="text-muted w-100 mt-5">Chưa có dữ liệu hành trình niên khóa ${schoolYear} cho con.</div>`;
-        return;
-    }
-
-    let htmlContent = "";
-    filteredRecords.forEach(record => {
-        const checksCount = record.data.checks ? record.data.checks.filter(c => c === true).length : 0;
-        let treeImg = checksCount > 0 ? anh12GiaiDoan[checksCount - 1] : "https://lh3.googleusercontent.com/d/1c7j4Qm6bDyFYYGoVMCP1hlFRE8sg2dRm";
-        let stageName = checksCount <= 4 ? "Đang nảy mầm" : (checksCount <= 11 ? "Cây trưởng thành" : "Hạnh phúc rực rỡ");
-        if(checksCount === 0) stageName = "Hạt giống";
-
-        htmlContent += `
-            <div class="journey-card">
-                <img src="${treeImg}" style="width: 70px; height: 70px; object-fit: contain; filter: drop-shadow(0 0 5px var(--cyber-green));">
-                <span class="journey-time-tag">Năm ${record.year} | T${record.month} - Tuần ${record.week}</span>
-                <div style="color: var(--cyber-cyan); font-family: 'Orbitron'; font-size: 0.7rem; font-weight: bold; margin-top: 8px; text-transform: uppercase;">${stageName}</div>
-                <div class="badge mt-1" style="font-size: 0.5rem; background: rgba(57, 255, 20, 0.1); color: var(--cyber-green);">${checksCount}/12 Tiêu chí</div>
-            </div>`;
-    });
-    grid.innerHTML = htmlContent;
-}
-window.onload = () => {
-    
-    bgImg.crossOrigin = "anonymous";
-    bgImg.src = BG_URL;
-    bgImg.onload = () => { 
-        canvas.width = bgImg.width; 
-        canvas.height = bgImg.height; 
-        update(); 
-    };
-
-    initAllStudentDropdowns();
-    initDiary(); // Khởi tạo các tiêu chuẩn rọi
-    initLoadData(); // Tải dữ liệu từ Google Sheet
-};
-let lastTotal = 0; 
-
-async function autoSyncData() {
-    try {
-        
-        const res = await fetch(GOOGLE_SCRIPT_URL);
-        const data = await res.json();
-        
-        
-        if (data.total !== lastTotal) {
-            console.log("Phát hiện mầm xanh mới! Đang cập nhật...");
-            
-           
-            gardenData = data.items.reverse();
-            lastTotal = data.total;
-            
-           
-            const treeCountElem = document.getElementById('treeCount');
-            if(treeCountElem) treeCountElem.innerText = data.total;
-            
-           
-            renderGarden();
-            
-          
-            const resTrack = await fetch(GOOGLE_SCRIPT_URL + "?action=GET_TRACKING");
-            cloudTrackingData = await resTrack.json();
-        }
-    } catch (e) {
-        console.error("Lỗi đồng bộ tự động:", e);
-    }
-}
-
-
-setInterval(autoSyncData, 8000); 
-
-
-const originalInitLoad = initLoadData;
-initLoadData = async function() {
-    await originalInitLoad();
-    lastTotal = gardenData.length; 
-};
-function rebuildIndex() {
-    indexedTrackingData = {}; // Xóa ngăn kéo cũ
-    for (let key in cloudTrackingData) {
-        // key có dạng: "TênHS_Năm_Tháng_Tuần"
-        const parts = key.split("_");
-        const studentName = parts[0];
-        
-        if (!indexedTrackingData[studentName]) {
-            indexedTrackingData[studentName] = [];
-        }
-        
-        indexedTrackingData[studentName].push({
-            key: key,
-            year: parts[1],
-            month: parts[2],
-            week: parts[3],
-            data: cloudTrackingData[key]
-        });
-    }
-    
-    // Sắp xếp thứ tự thời gian (tháng, tuần) sẵn cho từng học sinh
-    for (let name in indexedTrackingData) {
-        indexedTrackingData[name].sort((a, b) => 
-            (parseInt(a.month) - parseInt(b.month)) || (parseInt(a.week) - parseInt(b.week))
-        );
-    }
-}
 </script>
 </body>
 </html>
